@@ -7,6 +7,8 @@
 
 #include "stm32f10x.h"
 
+#define BOOTLOADER_SOURCECODE
+
 #if defined (STM32F10X_LD)
 #error " target STM32F10x device used (STM32F10X_LD) (in dwgl_global.h file)"
 #endif
@@ -60,8 +62,8 @@
 #define ADC_BUFFER_SIZE				320
 
 #define ADC_LINE1					0x0c0  //低于些电压认为有手机;=0xc0波动为310mV,这个可能要做补偿
-#define ADC_LINE2					0x080  //电流波动范围 ;=0x80 波动为20mA
-#define ADC_LINE3					0x060  //电流波动范围 ;=0x60 波动为15mA  电流小于此值表示没有使用
+#define ADC_LINE2					0x029	//0x080  //电流波动范围 ;=0x80 波动为20mA
+#define ADC_LINE3					0x01f	//0x060  //电流波动范围 ;=0x60 波动为15mA  电流小于此值表示没有使用
 //#define ADC_LINE2					0x0100  //电流波动范围 ;=0x100 波动为40mA
 
 #define UART1_RXBUFFER_SIZE			0x200
@@ -208,6 +210,9 @@ extern u8 file_wr;
 extern u8 file_id;					//当前正写文件的ID
 extern u32 NextFileAddr;
 extern u32 check_time;
+#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+extern u32 KEY_time;
+#endif
 //extern u32 display_time;
 extern u8 UART_BUFFER[128];
 extern u8 UART1_TXBUFFER[128];
@@ -225,8 +230,10 @@ extern u16 ADC_BUFFER[ADC_BUFFER_SIZE];
 extern u8 AINx_ADCch[18];
 extern u16 ADC_Base0[18];			//ADC静态值
 extern u8 device_num[20];
-extern u16 AD_count[64];			//广告计数
-extern u8 charge_speed[2];			//充电速度
+#ifndef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+extern 	u16 AD_count[64];   //广告计数
+extern 	u8 charge_speed[2];   //充电速度
+#endif
 
 extern 	u8  SF_REG;
 extern 	u8  GAIN_REG;

@@ -2030,6 +2030,7 @@ void cmd_Port_Info(void)   //PC机要的上电情况信息
 	}
 }
 //---------------------------------------------------------------------------------
+#ifndef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
 //获取充电速度 0x54
 void cmd_Get_charge_speed(void)   //获取充电速度
 {
@@ -2083,6 +2084,7 @@ void cmd_Get_charge_speed(void)   //获取充电速度
 		}
 	}
 }
+#endif
 //---------------------------------------------------------------------------------
 //下发:67  0D  XX(????)  F0  55  02(端口个数)  XX(端口号)  U64(??????)  XX(端口号)  U64(??????)  XX(???)  99
 //返回:68  0D  F0  XX(???)  55  02(????)  XX(???X1)  U64(??????)  XX(???X2)  U64(??????)  XX(???)  99
@@ -2554,6 +2556,7 @@ void cmd_Get_Version(void)
 
 }
 //---------------------------------------------------------------------------------
+#ifndef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
 //获取广告计数 0X34
 void cmd_Get_AD_count(void) 
 {
@@ -2588,6 +2591,7 @@ void cmd_Get_AD_count(void)
 		UART1_Send_Data(UART1_TXBUFFER,(UART1_TXBUFFER[1]<<1));		
 	}
 }
+#endif
 //---------------------------------------------------------------------------------
 void cmd_Device_num(void)
 {
@@ -2610,7 +2614,11 @@ void cmd_Device_num(void)
 	if(UART1_RXBUFFER[(UART1_RXBUFFE_HEAD+5)&UART1_RX_MAX]==81)  //项目号
 	{
 		en = 0xff;
+		#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+		for(i=0;i<(UART1_RXBUFFER[(UART1_RXBUFFE_HEAD+6+i)&UART1_RX_MAX]+2);i++)  //判断要不要重写
+		#else
 		for(i=0;i<(UART1_RXBUFFER[(UART1_RXBUFFE_HEAD+6)&UART1_RX_MAX]+2);i++)  //判断要不要重写
+		#endif
 		{
 			if(info2STR.item81[i] != UART1_RXBUFFER[(UART1_RXBUFFE_HEAD+5+i)&UART1_RX_MAX])
 			{
@@ -2695,8 +2703,12 @@ void cmd_Device_num(void)
 		else if(LCDC.LCDSPPID[lcd_index]==0) display_x = 270;
 		display_y = 125;
 
-		tft_DisplayStr(display_x, display_y, UART_BUFFER,POINT_COLOR, BACK_COLOR,lcd_cs);
-		tft_DisplayStr(display_x, display_y, device_num,0x0000,0xffff,lcd_cs);
+		tft_DisplayStr(display_x, display_y, UART_BUFFER, POINT_COLOR, BACK_COLOR, lcd_cs);
+		#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+		tft_DisplayStr(display_x, display_y, device_num, POINT_COLOR, BACK_COLOR, lcd_cs);
+		#else
+		tft_DisplayStr(display_x, display_y, device_num, 0x0000, 0xffff, lcd_cs);
+		#endif
 	}
 }
 //---------------------------------------------------------------------------------
@@ -3348,7 +3360,7 @@ void DisplayADC_BL(unsigned int x, unsigned int y, u16 *s,u16 PenColor, u16 Back
 {
 	u8 i,j;
 	u32 temp;
-	for(i=0;i<3;i++)
+	for(i=0;i<6;i++)
 	{
 		temp = *s++;
 		j=0;

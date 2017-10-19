@@ -22,6 +22,9 @@ void CHIP_PRO(void)
 {
 	unsigned int i,j;
 	unsigned int f_size,f_addr,chip_addr;
+	#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+	unsigned int f_size_temp,f_addr_temp;
+	#endif
 	unsigned short int *p;
 	FLASH_Status temp;
 	
@@ -81,7 +84,10 @@ void CHIP_PRO(void)
 				break;
 				}
 		}
-				
+		#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+		f_size_temp	= 	f_size;
+		f_addr_temp	= 	f_addr;
+		#endif
 	if(f_size>0)
 		{			
      FLASH_Unlock();  //FLASH解锁
@@ -124,8 +130,67 @@ void CHIP_PRO(void)
 		}
 		FLASH_Lock();    //??FLASH???????
 		
+		#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+		//校验更新		
+		chip_addr = FLASH_APP1_ADDR;    //偏移64K
+		i=0;
+		while(f_size_temp)
+		{	
+		 if((chip_addr&0xfffff800)==chip_addr)
+		 {
+//		 FLASH2_RAMSPI_Read (f_addr+2*i, str_buffer, 2048);   
+ 		 FLASH2_GPIOSPI_Read (f_addr_temp+2*i, str_buffer, 2048);  //媒休初始化
+			j=0;
+		 }	
+		 
+		 if(p[j]!=(*(vu16*)(chip_addr)))    //
+		 {
+			  FLASH_Unlock();  //FLASH解锁
+			  FLASH_ClearFlag(FLASH_FLAG_BSY|FLASH_FLAG_EOP|FLASH_FLAG_PGERR|FLASH_FLAG_WRPRTERR);//?????
+				while(1)
+					{
+					 temp=FLASH_ErasePage(FLASH_APP1_ADDR);     //擦除用户程序
+						if(temp==FLASH_COMPLETE)
+						{break;}
+					}
+			  FLASH_Lock();    //FLASH上锁					
+				break;
+		 }
+		 		 
+		i++;
+		j++;
+		chip_addr+=2;
+		f_size_temp -=2;
+		}
+				
+		if(f_size_temp==0)
+		{
+				UART_BUFFER[0] = 'C';
+				UART_BUFFER[1] = 'h';
+				UART_BUFFER[2] = 'e';
+				UART_BUFFER[3] = 'c';
+				UART_BUFFER[4] = 'k';
+				UART_BUFFER[5] = ' ';
+				UART_BUFFER[6] = 'T';
+				UART_BUFFER[7] = 0;
+				tft_DisplayStr(80, (240-8*7)/2, UART_BUFFER,POINT_COLOR, BACK_COLOR,3);
+		}
+		else
+		{
+				UART_BUFFER[0] = 'C';
+				UART_BUFFER[1] = 'h';
+				UART_BUFFER[2] = 'e';
+				UART_BUFFER[3] = 'c';
+				UART_BUFFER[4] = 'k';
+				UART_BUFFER[5] = ' ';
+				UART_BUFFER[6] = 'F';
+				UART_BUFFER[7] = 0;
+				tft_DisplayStr(80, (240-8*7)/2, UART_BUFFER,POINT_COLOR, BACK_COLOR,3);
+		}
+		#else
 		i = 1000;
-		while(i--);		
+		while(i--);
+		#endif	
 	 }
 
 
@@ -151,7 +216,6 @@ void CHIP_PRO(void)
 // 　FLASH_Lock();
 
 }
-
 
 //------------------------------------------------------
 void Check_CHIP_PRO(void)   //检查更新情况

@@ -48,8 +48,12 @@
 //#define   HPW	  8
 
 #define   HDP	  319
-//#define   HT	  421
+#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+#define   HT	  421
+#else
 #define   HT	  423//天马屏
+#endif
+
 //#define   HPS	  68
 #define   HPS	  70   //天马屏
 //#define   LPS	  33
@@ -63,8 +67,12 @@
 //#define   VPW	  3
 
 #define   VDP	  239
-//#define   VT	  268  
+#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+#define   VT	  268  
+#else
 #define   VT	  263   //天马屏
+#endif
+
 //#define   VPS	  18
 #define   VPS	  13   //天马屏
 //#define   FPS	  10
@@ -99,8 +107,12 @@
 /*Private define-------------------------*/
 //#define POINT_COLOR WHITE
 #define POINT_COLOR 0x0000
-//#define BACK_COLOR	BLUE
+
+#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+#define BACK_COLOR	BLUE
+#else
 #define BACK_COLOR	WHITE
+#endif
 
 /*--------16位颜色值---------------*/
 #define WHITE         	 0xFFFF

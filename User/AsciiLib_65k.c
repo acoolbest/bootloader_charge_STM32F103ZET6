@@ -10,7 +10,9 @@
 *   1.0   2006.10.7  lcf     基本的功能完成
 **************************************************************************************/
 #include "stm32f10x.h"
-
+#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+unsigned char const HzLib[]={0xff};
+#endif
 unsigned char const AsciiLib[] = {
 
 	/*   */

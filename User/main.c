@@ -21,6 +21,18 @@ void uart1_cmd(void)
 {
 	u16 last_i;
 	u8 last_d;
+	
+	if(UART1_Error==1)			//接收满
+	{			
+		UART1_Error = 0;
+	}
+	if(UART2_Error==1)			//接收满
+	{
+		#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+		UART2_Error = 0;
+		#endif
+	}
+	
 	UART1_Receive_Length = UART1_RXBUFFE_LAST - UART1_RXBUFFE_HEAD;
 	UART1_Receive_Length &= UART1_RX_MAX;//最大字节
 	/********定义的字符作为一帧数据的结束标识************/
@@ -43,12 +55,18 @@ void uart1_cmd(void)
 						switch(UART1_RXBUFFER[(UART1_RXBUFFE_HEAD+4)&UART1_RX_MAX])
 						{    		
 							//case 0x51:  cmd_Device_Info();				break;//获取设备信息
+							#ifndef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
 							case 0x53:  cmd_Port_Info();					break;//获取端口信息
 							case 0x54:  cmd_Get_charge_speed();				break;//获取充电速度
 							case 0x55:  cmd_Device_Check();					break;//核对信息
+							#endif
+
 							case 0x57:  cmd_Device_num();					break;//设备号
+
+							#ifndef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
 							case 0x59:  cmd_Power_off();					break;//断电命令
 							case 0x5a:  cmd_Power_on();						break;//上电命令
+							#endif
 
 							case 0x10:  cmd_Hub_Rst();						break;//复位HUB		 
 							case 0x11:  cmd_File_Requst();					break;//文件操作请求
@@ -61,7 +79,11 @@ void uart1_cmd(void)
 							//case 0x33:  cmd_Get_MediaV();					break;//媒体控制命令
 							case 0x32:  cmd_Set_Version();					break;//设置版本
 							case 0x33:  cmd_Get_Version();					break;//获取版本
+
+							#ifndef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
 							case 0x34:  cmd_Get_AD_count();					break;//获取广告计数
+							#endif
+							
 							case 0x3E:  Device_Rst();						break;//复位设备
 
 							//case 0xE1:  cmd_Get_State();					break;//读HUB号到
@@ -200,17 +222,29 @@ void uart3_cmd(void)
 void init_base_data(void)
 {
 	u8 i = 0;
-	//device.Version[0] = 'B'; //引导号 BL
-	device.Version[0] = 'N'; //引导号 APP
+	
+	#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+	device.Version[0] = 'B'; //引导号 BL
 	device.Version[1] = '1'; //硬件功能号 ='1'，ctrl;='2',HUB.
-	device.Version[2] = '2'; //硬件版本号
+	device.Version[2] = '1'; //硬件版本号
 	device.Version[3] = '.'; //
 	device.Version[4] = '1'; //2017年 写年份的最后两位0-99,4位表一位十进制
 	device.Version[5] = '7'; //2017年 
 	device.Version[6] = '.'; //
 	device.Version[7] = '1'; //5月第2版    //Version[1]高四位是月份。低四位是当月产生的版本。
-	device.Version[8] = '0'; //5月第2版
-
+	device.Version[8] = '1'; //5月第2版
+	#else
+	device.Version[0] = 'A'; //引导号 APP
+	device.Version[1] = '1'; //硬件功能号 ='1'，ctrl;='2',HUB.
+	device.Version[2] = '1'; //硬件版本号
+	device.Version[3] = '.'; //
+	device.Version[4] = '1'; //2017年 写年份的最后两位0-99,4位表一位十进制
+	device.Version[5] = '7'; //2017年 
+	device.Version[6] = '.'; //
+	device.Version[7] = '1'; //5月第2版    //Version[1]高四位是月份。低四位是当月产生的版本。
+	device.Version[8] = '1'; //5月第2版
+	#endif
+	
 	step =0;
 	time_s = 0;
 	time_sys = 0;
@@ -254,31 +288,50 @@ void init_LCD_background(void)
 	LCDC.LCDSPTime[LCD2_INDEX] = 0;
 	LCDC.LCDSPPID[LCD1_INDEX] =0;
 	LCDC.LCDSPPID[LCD2_INDEX] =0;
-
+	
+	#ifndef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
 	ADC1_3_PeriphClockCmd(DISABLE);
 	display_flash_BMPE (0,0,3,LCDC.LCDSPPID[LCD1_INDEX],3);//单色彩色都支持 调背景
 	ADC1_3_PeriphClockCmd(ENABLE);
+	#endif
 }
 
 void init_LCD_config()
 {
+	GPIO_ResetBits(LCD_RST_PORT, LCD_RST_PIN);
 	Delay_ms(200);	
 	GPIO_SetBits(LCD_RST_PORT, LCD_RST_PIN);
 	Delay_ms(300);	
 	LCD_Init(); 
-	LCD_Init1();	
-	Delay_ms(10);	
-	LCD_Init(); 
-	LCD_Init1();	
+	LCD_Init1();
+	
+	#ifndef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+	Delay_ms(10);
+	LCD_Init();
+	LCD_Init1();
+	#endif
+	
 	GPIO_ResetBits(LCD_CS1_PORT, LCD_CS1_PIN);
 	GPIO_ResetBits(LCD_CS2_PORT, LCD_CS2_PIN);
-	Delay_ms(1);		
-	//LCD_Clear(RED);
-	//LCD_Clear(GREEN);
+	Delay_ms(1);
+	
+	#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+	LCD_Clear(RED);
+	Delay_ms(500);	
+	LCD_Clear(GREEN);
+	Delay_ms(500);	
+	#endif
+	
 	LCD_Clear(BLUE);
 	//version		
 	Version_display(290,device.Version);
-	Delay_ms(2000); 	
+	
+	#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+	Delay_ms(100); 	
+	#else
+	Delay_ms(2000);
+	#endif
+	
 	//tft_16bitdeep_BMP (220,0,gImage11_240_100_16bitC);		//原LOGO
 	GPIO_SetBits(LCD_CS1_PORT, LCD_CS1_PIN);
 	GPIO_SetBits(LCD_CS2_PORT, LCD_CS2_PIN);
@@ -287,7 +340,7 @@ void init_LCD_config()
 static void init_all_local_data_and_display_on_LCD(void)
 {
 	u32 i = 0;
-	//u8 flag = 0;
+	u8 flag = 0;
 	FLASH2_GPIOSPI_Read (Addr_04min, str_buffer, 64);  //读取图片张数
 	if(str_buffer[0] == 0x67)//项有效
 	{
@@ -319,23 +372,39 @@ static void init_all_local_data_and_display_on_LCD(void)
 		//info2STR.item3_data[0] =  0x01;  //开启提示
 		//info2STR.item3_data[1] =  0x01;
 	}
-	//flag = 0;
+	flag = 0;
 	if(info2STR.item31[0] == 31 && info2STR.item31[1]==9)//项31有效
 	{
-		//flag = 1;
+		flag = 1;
+		
+		#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+		for(i=0;i<9;i++)
+		#else
 		for(i=1;i<3;i++)
+		#endif
 		{
 			if(info2STR.item31_data[i] != device.Version[i])
 			{
-				//flag = 0;
+				flag = 0;
 				break;
 			}
 		}			
 	}
-	#if 0
+	#if 1
 	if(flag==0)  //项31不正常重启
 	{	
+		#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+		info2STR.item31[0] = 31;
+		info2STR.item31[1] = 9;
+		for(i=0;i<9;i++)
+		{
+			info2STR.item31_data[i] = device.Version[i];
+		}
+		FLASH2_GPIOSPI_SER(Addr_info2);  ////每次擦擦4K
+		FLASH2_GPIOSPI_Write(Addr_info2, &info2STR.head[0], sizeof(info2STR));//写入当前版本号
+		#else
 		NVIC_SystemReset();
+		#endif
 	}
 	#endif
 	//获取设备号
@@ -355,8 +424,12 @@ static void init_all_local_data_and_display_on_LCD(void)
 		}
 	}
 	device_num[i++]= 0;
-	tft_DisplayStr(270, 125, device_num,0x0000,0xffff,3);
-	//tft_DisplayStr(290, 125, device_num,0x0000,0xffff,3);
+	
+	#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+	tft_DisplayStr(270, 125, device_num, POINT_COLOR, BACK_COLOR, 3);
+	#else
+	tft_DisplayStr(270, 125, device_num, 0x0000, 0xffff, 3);
+	#endif
 	
 	//初始时间
 	for(i=0;i<2;i++)
@@ -386,13 +459,22 @@ static void init_all_local_data_and_display_on_LCD(void)
 	//DisplayADC_BL(150, 0, ADC_Base0,POINT_COLOR, BACK_COLOR,1);
 	//DisplayADC_BL(150, 0, &ADC_Base0[3],POINT_COLOR, BACK_COLOR,2);
 	//DisplayADC_BL(150, 0, &ADC_Base0[5],POINT_COLOR, BACK_COLOR,3);
+	
+	#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+	Get_ADC_BaseLine();
+ 	DisplayADC_BL(240, (240-8*4)/2, &ADC_Base0[6],POINT_COLOR, BACK_COLOR,3);
+	#endif
 
 	//文本区初始	
 	//FiletoBuffer_ID(u8 area,u8 id,u8 *p);
-	//FiletoBuffer_ID(2,48,LCD1_TxtBuffer);
-	//FiletoBuffer_ID(2,48,LCD2_TxtBuffer);
+
+	#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+	FiletoBuffer_ID(2,48,LCD_TxtBuffer[LCD1_INDEX]);
+	FiletoBuffer_ID(2,48,LCD_TxtBuffer[LCD2_INDEX]);
+	#else
 	LCD_TxtBuffer[LCD1_INDEX][0]=0;
 	LCD_TxtBuffer[LCD2_INDEX][0]=0;
+	#endif
 
 	LCD_TxtBuffer[LCD1_INDEX][2048]=0;
 	LCD_TxtBuffer[LCD1_INDEX][2049]=0;
@@ -411,10 +493,26 @@ static void init_all_local_data_and_display_on_LCD(void)
 	}
 	if((device.use&0x04)==0x0) //有码显示
 	{
+		#ifndef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
 		DisplayPROT_EWM(80,56,0,1);  //128
 		DisplayPROT_EWM(80,56,1,2);  //128
-		//DisplayPROT_EWM(126,40,1,2);	//160
+		#endif
 	}
+}
+
+static void check_embeded_program_update(void)//更新检查
+{
+#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+	Get_PRO_State();
+	Check_CHIP_PRO();	
+	Get_PRO_State();
+	Delay_ms(100);	
+	time_sys = 2000;
+#else
+	Check_CHIP_PRO();
+	Delay_ms(100);
+	time_sys = 0;
+#endif
 }
 
 void check_key_press_down_to_reset_board(void)
@@ -422,6 +520,26 @@ void check_key_press_down_to_reset_board(void)
 	u32 i = 0;
 	if(GPIO_ReadInputDataBit(KEY_PORT,KEY_PIN) ==0)  //按键=0,1S进行人为复位
 	{
+		#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+		KEY_time = time_sys;
+		while(GPIO_ReadInputDataBit(KEY_PORT,KEY_PIN) ==0)
+		{
+			led_power_ctrl(LED_INDEX, LED_TURN_ON);
+			if(time_sys-KEY_time>=10000)
+			{
+				FLASH2_GPIOSPI_Read (Addr_info2, &info2STR.head[0], sizeof(info2STR));	//媒休初始化
+				info2STR.item21[0] = 21;
+				info2STR.item21[1] = 4;
+				info2STR.item21_data[0] = 0xE0;  //自毁
+				info2STR.item21_data[1] = 0x00;
+				info2STR.item21_data[2] = 0;  
+				info2STR.item21_data[3] = 0;
+				FLASH2_GPIOSPI_SER(Addr_info2);  //每次擦擦4K
+				FLASH2_GPIOSPI_Write(Addr_info2, &info2STR.head[0], sizeof(info2STR));
+				break;
+			}
+		}
+		#endif
 		rewrite_ADC_BaseLine_flash_data();
 		i=1000;
 		while(i--);
@@ -429,19 +547,54 @@ void check_key_press_down_to_reset_board(void)
 	}
 }
 
+#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+static void bootloader_check_app_program_at_regular_time(void)
+{
+	Get_PRO_State();
+	if(KEEP_EN==0xff) return;
+
+	if((device.Version[0]==Version_FLAG1) &&(APP_EN==1))
+	{			
+		UART_BUFFER[0] = 'R';
+		UART_BUFFER[1] = 'u';
+		UART_BUFFER[2] = 'n';
+		UART_BUFFER[3] = ' ';
+		UART_BUFFER[4] = 'A';
+		UART_BUFFER[5] = 'P';
+		UART_BUFFER[6] = 'P';
+		UART_BUFFER[7] = 0;
+		tft_DisplayStr(100, (240-8*7)/2, UART_BUFFER,POINT_COLOR, BACK_COLOR,3);
+		Delay_ms(1000);	
+		Goto_APP(FLASH_APP1_ADDR);
+	}
+	else
+	{
+		Check_CHIP_PRO();
+		Get_PRO_State();
+	}
+}
+#endif
+
 void update_qrcode_at_regular_time(void)
 {
+	#ifndef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
 	u8 lcd_index = 0;
 	u8 lcd_cs = 0;
 	u8 file_num = 0;
+	#endif
+	
 	if(time_sys-check_time >= 5000)			//定时检测设备
 	{
+		#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+		bootloader_check_app_program_at_regular_time();
+		#endif
 		check_time = time_sys;
 		led_power_ctrl(LED_INDEX, LED_TURN_ON);
 
 		if((device.use&0x10)==0x10) //二维码有更新
 		{
-			device.use &= ~0x10; //
+			device.use &= ~0x10;
+			#ifndef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
 			for(lcd_index=0;lcd_index<2;lcd_index++)
 			{
 				lcd_cs = lcd_index+1;
@@ -458,6 +611,7 @@ void update_qrcode_at_regular_time(void)
 				}
 
 			}
+			#endif
 		}
 	}
 }
@@ -470,11 +624,16 @@ void update_qrcode_at_regular_time(void)
  */
 static void update_screen_protect(u8 lcd_index)
 {
+	#ifndef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
 	u8 lcd_cs = lcd_index+1;
 	u8 file_num = lcd_index;
+	#endif
+	
 	if((LCDC.LCDSPTime[lcd_index]>=LCDC.LCDSPTimeSet)&&(time_sys-time_s_temp<300))//LCD更新屏保
 	{
 		LCDC.LCDSPTime[lcd_index] -=LCDC.LCDSPTimeSet;
+		
+		#ifndef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
 		if(LCDC.LCDSPPID[lcd_index]!=2)
 		{
 			if(LCDC.LCDSPPID[lcd_index]<1)
@@ -497,6 +656,7 @@ static void update_screen_protect(u8 lcd_index)
 				tft_DisplayStr(270, 125, device_num,0x0000,0xffff,lcd_cs);
 			}
 		}
+		#endif
 	}
 }
 
@@ -530,7 +690,9 @@ void update_advertisement()
 				{
 					LCDC.LCDPID[lcd_index]=0;
 				}
+				#ifndef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
 				AD_count[LCDC.LCDPID[lcd_index]]++;   //广告计数
+				#endif
 				display_flash_BMPE (116,0,4,LCDC.LCDPID[lcd_index],lcd_cs);//广告
 			}
 		}
@@ -622,12 +784,15 @@ void synthesize_function(u8 lcd_index)
 		display_flash_BMPE (0,0,3,LCDC.LCDSPPID[lcd_index],lcd_cs);//单色彩色都支持 调背景
 		DisplayPROT_EWM(80,56,file_num,lcd_cs);  //128
 		tft_DisplayStr(270, 125, device_num,0x0000,0xffff,lcd_cs);
+		
+		#ifndef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
 		for(i=0;i<sizeof(gImage10_16_288_1bitC);i++)
 		{
 			LCD_TxtBuffer[lcd_index][i] = gImage10_16_288_1bitC[i];
 		}
 		LCD_TxtBuffer[lcd_index][2048]=0;
 		LCD_TxtBuffer[lcd_index][2049]=0;
+		#endif
 	}
 }
 
@@ -758,7 +923,20 @@ void deal_task_at_regular_time()
 	{
 		time_s_temp +=1000;
 		time_s++;
-
+		#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+		if(device.Version[0]==Version_FLAG1)   
+		{
+			UART_BUFFER[0] = time_s/36000+'0';
+			UART_BUFFER[1] = time_s%36000/3600+'0';
+			UART_BUFFER[2] = time_s%3600/600+'0';
+			UART_BUFFER[3] = time_s%600/60+'0';
+			UART_BUFFER[4] = time_s%60/10+'0';
+			UART_BUFFER[5] = time_s%10+'0';
+			UART_BUFFER[6] = 'S';
+			UART_BUFFER[7] = 0;
+			tft_DisplayStr(270, 0, UART_BUFFER, POINT_COLOR, BACK_COLOR, 3);
+		}
+		#endif
 		deal_task_at_regular_time0(LCD1_INDEX);
 		deal_task_at_regular_time0(LCD2_INDEX);
 		synthesize_function(LCD1_INDEX);
@@ -821,12 +999,10 @@ int main(void)
 	init_LCD_config();
 	init_LCD_background();
 	init_all_local_data_and_display_on_LCD();
+	
 	//更新检查
-	//Check_CHIP_PRO();
-
-	Delay_ms(100);
-	time_sys = 0;
-
+	check_embeded_program_update();
+	
 	while(1)
 	{
 		for(i=0;i<VOID_FUNC_COUNT;i++) 

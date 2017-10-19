@@ -399,7 +399,9 @@ void UART2_Send_Data(u8 * p,u16 len)
 void UART3_Send_Data(u8 * p,u16 len)
 {
 	unsigned int i = 0;
+	#ifndef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
 	i = USART3->SR;//ох╤ав╢л╛╪д╢ФфВё╛ты╥╒км║ё
+	#endif
 	for(i=0;i<len;i++)
 	{
 		USART3->DR = p[i];

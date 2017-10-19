@@ -76,9 +76,10 @@ extern void cmd_Set_MediaV(void);
 extern void cmd_Get_MediaV(void);
 extern void cmd_Set_Version(void);
 extern void cmd_Get_Version(void);
+#ifndef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
 extern void cmd_Get_AD_count(void);
 extern void cmd_Get_charge_speed(void);
-
+#endif
 //uart3
 extern void uart3_cmd (void);
 extern void cmd3_ShakeHands(void);

@@ -273,6 +273,8 @@ void ADC1_3_PeriphClockCmd(FunctionalState NewState)
 
 void init_LCD_background(void)
 {
+	ADC1_3_PeriphClockCmd(DISABLE);
+	
 	LCDC.LCDPOFFTIME[LCD1_INDEX] = 0XFF;
 	LCDC.LCDPOFFTIME[LCD2_INDEX] = 0XFF;
 	LCDC.PSwitch = 1;
@@ -288,12 +290,12 @@ void init_LCD_background(void)
 	LCDC.LCDSPTime[LCD2_INDEX] = 0;
 	LCDC.LCDSPPID[LCD1_INDEX] =0;
 	LCDC.LCDSPPID[LCD2_INDEX] =0;
-	
+
 	#ifndef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
-	ADC1_3_PeriphClockCmd(DISABLE);
 	display_flash_BMPE (0,0,3,LCDC.LCDSPPID[LCD1_INDEX],3);//单色彩色都支持 调背景
-	ADC1_3_PeriphClockCmd(ENABLE);
 	#endif
+
+	ADC1_3_PeriphClockCmd(ENABLE);
 }
 
 void init_LCD_config()
@@ -313,13 +315,14 @@ void init_LCD_config()
 	
 	GPIO_ResetBits(LCD_CS1_PORT, LCD_CS1_PIN);
 	GPIO_ResetBits(LCD_CS2_PORT, LCD_CS2_PIN);
-	Delay_ms(1);
 	
 	#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
 	LCD_Clear(RED);
 	Delay_ms(500);	
 	LCD_Clear(GREEN);
-	Delay_ms(500);	
+	Delay_ms(500);
+	#else
+	Delay_ms(1);
 	#endif
 	
 	LCD_Clear(BLUE);

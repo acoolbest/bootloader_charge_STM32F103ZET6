@@ -1431,56 +1431,37 @@ void cmd_File_Tx(void)
 	{
 		if((UART1_RXBUFFER[(UART1_RXBUFFE_HEAD+6)&UART1_RX_MAX]==file_hook)&& ((file_wr&0x01) ==1))//钩子有没有对上
 		{
-			file_hook++;
 			file_wr |= 0x02;//开始写文件
 			len = UART1_RXBUFFER[(UART1_RXBUFFE_HEAD+1)&UART1_RX_MAX]*2;
 			EN  = 0xFF;
-			if(len==266) //是不是满页
+			for(i=0;i<(len-10);i++)
 			{
-				for(i=0;i<256;i++)
-				{
-					str_buffer[i] = UART1_RXBUFFER[(UART1_RXBUFFE_HEAD+7+i)&UART1_RX_MAX];
-				}
-				FLASH2_GPIOSPI_Write(file_addr, str_buffer, 256);
-
-				FLASH2_GPIOSPI_Read(file_addr, &str_buffer[1000], 256);
-				for(i=0;i<256;i++)
-				{
-					if(str_buffer[1000+i]!=str_buffer[i])
-					{
-						EN = 0; break;
-					}
-				}
-
-				file_addr +=256;
+				str_buffer[i] = UART1_RXBUFFER[(UART1_RXBUFFE_HEAD+7+i)&UART1_RX_MAX];
 			}
-			else
+			FLASH2_GPIOSPI_Write(file_addr, str_buffer, len-10);
+			FLASH2_GPIOSPI_Read(file_addr, &str_buffer[1000], len-10);
+			for(i=0;i<len-10;i++)
 			{
-				for(i=0;i<(len-10);i++)
+				if(str_buffer[1000+i]!=str_buffer[i])
 				{
-					str_buffer[i] = UART1_RXBUFFER[(UART1_RXBUFFE_HEAD+7+i)&UART1_RX_MAX];
+					EN = 0; break;
 				}
-				FLASH2_GPIOSPI_Write(file_addr, str_buffer, len-10);
-				FLASH2_GPIOSPI_Read(file_addr, &str_buffer[1000], len-10);
-				for(i=0;i<len-10;i++)
-				{
-					if(str_buffer[1000+i]!=str_buffer[i])
-					{
-						EN = 0; break;
-					}
-				}
+			}
+			if(EN == 0xFF)
+			{
+				file_hook++;
 				file_addr +=len-10;
 			}
 		}
-		else if(UART1_RXBUFFER[(UART1_RXBUFFE_HEAD+6)&UART1_RX_MAX]==(file_hook-1))//发的上一包
+		else if(UART1_RXBUFFER[(UART1_RXBUFFE_HEAD+6)&UART1_RX_MAX] + 1 == file_hook)//发上一包
 		{
 			EN  = 0xFF;
 		}
 		else
-
 		{
 			EN  = 0x00;
 		}
+		
 		if(UART1_RXBUFFER[(UART1_RXBUFFE_HEAD+5)&UART1_RX_MAX]==0xff)//传输完成
 		{
 			if((file_wr&0xF0)== 0x10)
@@ -2725,8 +2706,10 @@ void cmd_ShakeHands(void)
 		UART_BUFFER[0] = 'C';
 		UART_BUFFER[1] = 0;
 		tft_DisplayStr(0, 0, UART_BUFFER,0XFFFF, 0X0000,3);
+		#ifndef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
 		LCDC.LCDSPTime[LCD1_INDEX] = 0;
 		LCDC.LCDSPTime[LCD2_INDEX] = 0;
+		#endif
 	}
 	else if(UART1_RXBUFFER[(UART1_RXBUFFE_HEAD+5)&UART1_RX_MAX] ==2)
 	{
@@ -2734,8 +2717,10 @@ void cmd_ShakeHands(void)
 		UART_BUFFER[0] = 'S';
 		UART_BUFFER[1] = 0;
 		tft_DisplayStr(0, 0, UART_BUFFER,0XFFFF, 0X0000,3);
+		#ifndef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
 		LCDC.LCDSPTime[LCD1_INDEX] = 0;
 		LCDC.LCDSPTime[LCD2_INDEX] = 0;
+		#endif
 	}
 	else if(UART1_RXBUFFER[(UART1_RXBUFFE_HEAD+5)&UART1_RX_MAX] ==3)//APP MODE
 	{
@@ -3920,7 +3905,12 @@ void cmd_PRO_Version(void)
 		UART1_TXBUFFER[13] =  device.Version[6];
 		UART1_TXBUFFER[14] =  device.Version[7];
 		UART1_TXBUFFER[15] =  device.Version[8];
-
+		#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+		if((device.Version[0]==Version_FLAG1)&&((PRO_State&4)==4))	 //在B类中有A类
+		{
+			UART1_TXBUFFER[7] ='E';//无效版本
+		}
+		#endif
 		UART1_TXBUFFER[(UART1_TXBUFFER[1]<<1)-2] = 0;//check;
 		for(i=1;i<((UART1_TXBUFFER[1]<<1)-2);i++)
 		{

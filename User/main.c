@@ -222,27 +222,36 @@ void uart3_cmd(void)
 void init_base_data(void)
 {
 	u8 i = 0;
-	
-	#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
-	device.Version[0] = 'B'; //引导号 BL
 	device.Version[1] = '1'; //硬件功能号 ='1'，ctrl;='2',HUB.
-	device.Version[2] = '1'; //硬件版本号
-	device.Version[3] = '.'; //
+	device.Version[2] = '2'; //硬件版本号
+	device.Version[3] = '.';
+	
+	device.Version[6] = '.';
+	
+	#ifdef N_VERSION_SOURCECODE//ZHZQ_CHANGE
+	device.Version[0] = 'N'; //引导号 BL
+
 	device.Version[4] = '1'; //2017年 写年份的最后两位0-99,4位表一位十进制
 	device.Version[5] = '7'; //2017年 
-	device.Version[6] = '.'; //
+	
 	device.Version[7] = '1'; //5月第2版    //Version[1]高四位是月份。低四位是当月产生的版本。
-	device.Version[8] = '1'; //5月第2版
+	device.Version[8] = '0'; //5月第2版
+	#elif BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+	device.Version[0] = 'B'; //引导号 BL
+
+	device.Version[4] = '1'; //2017年 写年份的最后两位0-99,4位表一位十进制
+	device.Version[5] = '7'; //2017年 
+
+	device.Version[7] = '1'; //5月第2版    //Version[1]高四位是月份。低四位是当月产生的版本。
+	device.Version[8] = '0'; //5月第2版
 	#else
 	device.Version[0] = 'A'; //引导号 APP
-	device.Version[1] = '1'; //硬件功能号 ='1'，ctrl;='2',HUB.
-	device.Version[2] = '1'; //硬件版本号
-	device.Version[3] = '.'; //
+
 	device.Version[4] = '1'; //2017年 写年份的最后两位0-99,4位表一位十进制
 	device.Version[5] = '7'; //2017年 
-	device.Version[6] = '.'; //
+
 	device.Version[7] = '1'; //5月第2版    //Version[1]高四位是月份。低四位是当月产生的版本。
-	device.Version[8] = '1'; //5月第2版
+	device.Version[8] = '0'; //5月第2版
 	#endif
 	
 	step =0;
@@ -405,8 +414,8 @@ static void init_all_local_data_and_display_on_LCD(void)
 		}
 		FLASH2_GPIOSPI_SER(Addr_info2);  ////每次擦擦4K
 		FLASH2_GPIOSPI_Write(Addr_info2, &info2STR.head[0], sizeof(info2STR));//写入当前版本号
-		#else
-		NVIC_SystemReset();
+		//#else
+		//NVIC_SystemReset();
 		#endif
 	}
 	#endif

@@ -7,7 +7,8 @@
 
 #include "stm32f10x.h"
 
-#define BOOTLOADER_SOURCECODE
+#define N_VERSION_SOURCECODE
+//#define BOOTLOADER_SOURCECODE
 
 #if defined (STM32F10X_LD)
 #error " target STM32F10x device used (STM32F10X_LD) (in dwgl_global.h file)"

@@ -264,7 +264,7 @@ void SystemInit (void)
 #ifdef VECT_TAB_SRAM
 	SCB->VTOR = SRAM_BASE | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal SRAM. */
 #else
-	#ifdef BOOTLOADER_SOURCECODE//ZHZQ_CHANGE
+	#if (defined(BOOTLOADER_SOURCECODE) || defined(N_VERSION_SOURCECODE))//ZHZQ_CHANGE
 	SCB->VTOR = FLASH_BASE | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal FLASH. */
 	#else
 	SCB->VTOR = FLASH_BASE | 0x10000;

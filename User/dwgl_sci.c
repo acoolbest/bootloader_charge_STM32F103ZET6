@@ -245,6 +245,10 @@ static void UART3_Init(void)
 
 void USART1_IRQHandler(void)
 {
+	if (time_sys - time_uart1 >= 100)
+	{
+		stru_cmd_recv.cmd_state = ENUM_COM_MSG_HEAD;
+	}
 	time_uart1 = time_sys;
 	led_power_ctrl(LED_INDEX, LED_TURN_ON);
 	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)

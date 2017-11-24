@@ -530,7 +530,6 @@ Section Cross References
     dwgl_function.o(i.port_Charge_State) refers to dwgl_function.o(.data) for time_sys_temp
     dwgl_function.o(i.port_Charge_State) refers to dwgl_global.o(.bss) for ADC_Base0
     dwgl_function.o(i.process_com_data) refers to dwgl_function.o(i.is_com_msg_head) for is_com_msg_head
-    dwgl_function.o(i.process_com_data) refers to dwgl_global.o(.data) for time_sys
     dwgl_function.o(i.process_com_data) refers to dwgl_global.o(.bss) for device
     dwgl_function.o(i.rewrite_ADC_BaseLine_flash_data) refers to dwgl_function.o(i.usb_power_ctrl) for usb_power_ctrl
     dwgl_function.o(i.rewrite_ADC_BaseLine_flash_data) refers to bsp_systick.o(i.Delay_ms) for Delay_ms
@@ -1701,75 +1700,75 @@ Image Symbol Table
     i.UART3_Send_Data                        0x080130e0   Section        0  dwgl_sci.o(i.UART3_Send_Data)
     i.UART_Configuration                     0x08013110   Section        0  dwgl_sci.o(i.UART_Configuration)
     i.USART1_IRQHandler                      0x08013160   Section        0  dwgl_sci.o(i.USART1_IRQHandler)
-    i.USART2_IRQHandler                      0x080131ec   Section        0  dwgl_sci.o(i.USART2_IRQHandler)
-    i.USART3_IRQHandler                      0x08013260   Section        0  dwgl_sci.o(i.USART3_IRQHandler)
-    i.USART_ClearITPendingBit                0x080132d0   Section        0  stm32f10x_usart.o(i.USART_ClearITPendingBit)
-    i.USART_Cmd                              0x080132ee   Section        0  stm32f10x_usart.o(i.USART_Cmd)
-    i.USART_GetITStatus                      0x08013306   Section        0  stm32f10x_usart.o(i.USART_GetITStatus)
-    i.USART_ITConfig                         0x0801335a   Section        0  stm32f10x_usart.o(i.USART_ITConfig)
-    i.USART_Init                             0x080133a4   Section        0  stm32f10x_usart.o(i.USART_Init)
-    i.UsageFault_Handler                     0x0801347c   Section        0  stm32f10x_it.o(i.UsageFault_Handler)
-    i.Version_display                        0x08013480   Section        0  dwgl_function.o(i.Version_display)
-    i.__scatterload_copy                     0x080134ec   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x080134fa   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x080134fc   Section       14  handlers.o(i.__scatterload_zeroinit)
-    i.check_device_plugin                    0x0801350c   Section        0  main.o(i.check_device_plugin)
-    i.check_embeded_program_update           0x08013540   Section        0  main.o(i.check_embeded_program_update)
-    check_embeded_program_update             0x08013541   Thumb Code    20  main.o(i.check_embeded_program_update)
-    i.check_hub_link_state                   0x08013558   Section        0  main.o(i.check_hub_link_state)
-    i.check_key_press_down_to_reset_board    0x08013660   Section        0  main.o(i.check_key_press_down_to_reset_board)
-    i.cmd3_Get_State                         0x0801368c   Section        0  dwgl_function.o(i.cmd3_Get_State)
-    i.cmd3_Set_State                         0x08013750   Section        0  dwgl_function.o(i.cmd3_Set_State)
-    i.cmd3_ShakeHands                        0x08013918   Section        0  dwgl_function.o(i.cmd3_ShakeHands)
-    i.com_check_qr_code                      0x080139d0   Section        0  main.o(i.com_check_qr_code)
-    i.com_chip_pro                           0x08013a84   Section        0  main.o(i.com_chip_pro)
-    i.com_file_called                        0x08013cb8   Section        0  main.o(i.com_file_called)
-    i.com_file_erase                         0x08013fa4   Section        0  main.o(i.com_file_erase)
-    i.com_file_operations_request            0x080140e0   Section        0  main.o(i.com_file_operations_request)
-    i.com_file_transfer                      0x08014400   Section        0  main.o(i.com_file_transfer)
-    i.com_get_ad_count                       0x08014690   Section        0  main.o(i.com_get_ad_count)
-    i.com_get_adc                            0x08014708   Section        0  main.o(i.com_get_adc)
-    i.com_get_charge_speed                   0x08014784   Section        0  main.o(i.com_get_charge_speed)
-    i.com_get_embedded_version               0x08014884   Section        0  main.o(i.com_get_embedded_version)
-    i.com_get_port_state                     0x080148e8   Section        0  main.o(i.com_get_port_state)
-    i.com_get_version                        0x08014960   Section        0  main.o(i.com_get_version)
-    i.com_handshake                          0x08014a14   Section        0  main.o(i.com_handshake)
-    i.com_hub_reset                          0x08014b04   Section        0  main.o(i.com_hub_reset)
-    i.com_media_time_ctrl                    0x08014c7c   Section        0  main.o(i.com_media_time_ctrl)
-    i.com_power_off                          0x08014e20   Section        0  main.o(i.com_power_off)
-    i.com_power_on                           0x08014ec8   Section        0  main.o(i.com_power_on)
-    i.com_read_flash                         0x0801506c   Section        0  main.o(i.com_read_flash)
-    i.com_rgb888_565                         0x080150b0   Section        0  main.o(i.com_rgb888_565)
-    i.com_rgb_clear                          0x0801524c   Section        0  main.o(i.com_rgb_clear)
-    i.com_save_adc                           0x080152c8   Section        0  main.o(i.com_save_adc)
-    i.com_set_device_num                     0x08015344   Section        0  main.o(i.com_set_device_num)
-    i.com_set_version                        0x08015564   Section        0  main.o(i.com_set_version)
-    i.com_write_flash                        0x08015664   Section        0  main.o(i.com_write_flash)
-    i.deal_LCD1_task_at_regular_time         0x08015700   Section        0  main.o(i.deal_LCD1_task_at_regular_time)
-    i.deal_LCD2_task_at_regular_time         0x0801570a   Section        0  main.o(i.deal_LCD2_task_at_regular_time)
-    i.deal_LCD_task_at_regular_time          0x08015714   Section        0  main.o(i.deal_LCD_task_at_regular_time)
-    i.deal_cmd_data                          0x08015770   Section        0  main.o(i.deal_cmd_data)
-    i.deal_task_at_regular_time              0x08015920   Section        0  main.o(i.deal_task_at_regular_time)
-    i.deal_task_at_regular_time0             0x08015970   Section        0  main.o(i.deal_task_at_regular_time0)
-    i.delay_cycle                            0x08015a28   Section        0  pm25lq512flash.o(i.delay_cycle)
-    i.display_flash_BMP                      0x08015a38   Section        0  dwgl_tft.o(i.display_flash_BMP)
-    i.display_flash_BMPE                     0x08015d08   Section        0  dwgl_tft.o(i.display_flash_BMPE)
-    i.get_ADC1_3_data                        0x08016040   Section        0  dwgl_function.o(i.get_ADC1_3_data)
-    i.get_checksum                           0x080160f0   Section        0  dwgl_function.o(i.get_checksum)
-    i.hub_select                             0x08016118   Section        0  dwgl_function.o(i.hub_select)
-    hub_select                               0x08016119   Thumb Code   156  dwgl_function.o(i.hub_select)
-    i.init_LCD_background                    0x080161bc   Section        0  main.o(i.init_LCD_background)
-    i.init_LCD_config                        0x08016230   Section        0  main.o(i.init_LCD_config)
-    i.init_all_local_data_and_display_on_LCD 0x080162bc   Section        0  main.o(i.init_all_local_data_and_display_on_LCD)
-    init_all_local_data_and_display_on_LCD   0x080162bd   Thumb Code   558  main.o(i.init_all_local_data_and_display_on_LCD)
-    i.init_base_data                         0x08016518   Section        0  main.o(i.init_base_data)
-    i.is_com_msg_head                        0x0801658c   Section        0  dwgl_function.o(i.is_com_msg_head)
-    i.led_power_ctrl                         0x080165cc   Section        0  dwgl_function.o(i.led_power_ctrl)
-    i.main                                   0x08016654   Section        0  main.o(i.main)
-    i.port_Charge_State                      0x080166f8   Section        0  dwgl_function.o(i.port_Charge_State)
-    i.process_com_data                       0x0801687c   Section        0  dwgl_function.o(i.process_com_data)
-    i.rewrite_ADC_BaseLine_flash_data        0x08016a1c   Section        0  dwgl_function.o(i.rewrite_ADC_BaseLine_flash_data)
-    i.sprintf_com_cmd                        0x08016aec   Section        0  main.o(i.sprintf_com_cmd)
+    i.USART2_IRQHandler                      0x08013200   Section        0  dwgl_sci.o(i.USART2_IRQHandler)
+    i.USART3_IRQHandler                      0x08013274   Section        0  dwgl_sci.o(i.USART3_IRQHandler)
+    i.USART_ClearITPendingBit                0x080132e4   Section        0  stm32f10x_usart.o(i.USART_ClearITPendingBit)
+    i.USART_Cmd                              0x08013302   Section        0  stm32f10x_usart.o(i.USART_Cmd)
+    i.USART_GetITStatus                      0x0801331a   Section        0  stm32f10x_usart.o(i.USART_GetITStatus)
+    i.USART_ITConfig                         0x0801336e   Section        0  stm32f10x_usart.o(i.USART_ITConfig)
+    i.USART_Init                             0x080133b8   Section        0  stm32f10x_usart.o(i.USART_Init)
+    i.UsageFault_Handler                     0x08013490   Section        0  stm32f10x_it.o(i.UsageFault_Handler)
+    i.Version_display                        0x08013494   Section        0  dwgl_function.o(i.Version_display)
+    i.__scatterload_copy                     0x08013500   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x0801350e   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x08013510   Section       14  handlers.o(i.__scatterload_zeroinit)
+    i.check_device_plugin                    0x08013520   Section        0  main.o(i.check_device_plugin)
+    i.check_embeded_program_update           0x08013554   Section        0  main.o(i.check_embeded_program_update)
+    check_embeded_program_update             0x08013555   Thumb Code    20  main.o(i.check_embeded_program_update)
+    i.check_hub_link_state                   0x0801356c   Section        0  main.o(i.check_hub_link_state)
+    i.check_key_press_down_to_reset_board    0x08013674   Section        0  main.o(i.check_key_press_down_to_reset_board)
+    i.cmd3_Get_State                         0x080136a0   Section        0  dwgl_function.o(i.cmd3_Get_State)
+    i.cmd3_Set_State                         0x08013764   Section        0  dwgl_function.o(i.cmd3_Set_State)
+    i.cmd3_ShakeHands                        0x0801392c   Section        0  dwgl_function.o(i.cmd3_ShakeHands)
+    i.com_check_qr_code                      0x080139e4   Section        0  main.o(i.com_check_qr_code)
+    i.com_chip_pro                           0x08013a98   Section        0  main.o(i.com_chip_pro)
+    i.com_file_called                        0x08013ccc   Section        0  main.o(i.com_file_called)
+    i.com_file_erase                         0x08013fb8   Section        0  main.o(i.com_file_erase)
+    i.com_file_operations_request            0x080140f4   Section        0  main.o(i.com_file_operations_request)
+    i.com_file_transfer                      0x08014414   Section        0  main.o(i.com_file_transfer)
+    i.com_get_ad_count                       0x080146a4   Section        0  main.o(i.com_get_ad_count)
+    i.com_get_adc                            0x0801471c   Section        0  main.o(i.com_get_adc)
+    i.com_get_charge_speed                   0x08014798   Section        0  main.o(i.com_get_charge_speed)
+    i.com_get_embedded_version               0x08014898   Section        0  main.o(i.com_get_embedded_version)
+    i.com_get_port_state                     0x080148fc   Section        0  main.o(i.com_get_port_state)
+    i.com_get_version                        0x08014974   Section        0  main.o(i.com_get_version)
+    i.com_handshake                          0x08014a28   Section        0  main.o(i.com_handshake)
+    i.com_hub_reset                          0x08014b18   Section        0  main.o(i.com_hub_reset)
+    i.com_media_time_ctrl                    0x08014c90   Section        0  main.o(i.com_media_time_ctrl)
+    i.com_power_off                          0x08014e34   Section        0  main.o(i.com_power_off)
+    i.com_power_on                           0x08014edc   Section        0  main.o(i.com_power_on)
+    i.com_read_flash                         0x08015080   Section        0  main.o(i.com_read_flash)
+    i.com_rgb888_565                         0x080150c4   Section        0  main.o(i.com_rgb888_565)
+    i.com_rgb_clear                          0x08015260   Section        0  main.o(i.com_rgb_clear)
+    i.com_save_adc                           0x080152dc   Section        0  main.o(i.com_save_adc)
+    i.com_set_device_num                     0x08015358   Section        0  main.o(i.com_set_device_num)
+    i.com_set_version                        0x08015578   Section        0  main.o(i.com_set_version)
+    i.com_write_flash                        0x08015678   Section        0  main.o(i.com_write_flash)
+    i.deal_LCD1_task_at_regular_time         0x08015714   Section        0  main.o(i.deal_LCD1_task_at_regular_time)
+    i.deal_LCD2_task_at_regular_time         0x0801571e   Section        0  main.o(i.deal_LCD2_task_at_regular_time)
+    i.deal_LCD_task_at_regular_time          0x08015728   Section        0  main.o(i.deal_LCD_task_at_regular_time)
+    i.deal_cmd_data                          0x08015784   Section        0  main.o(i.deal_cmd_data)
+    i.deal_task_at_regular_time              0x08015934   Section        0  main.o(i.deal_task_at_regular_time)
+    i.deal_task_at_regular_time0             0x08015984   Section        0  main.o(i.deal_task_at_regular_time0)
+    i.delay_cycle                            0x08015a3c   Section        0  pm25lq512flash.o(i.delay_cycle)
+    i.display_flash_BMP                      0x08015a4c   Section        0  dwgl_tft.o(i.display_flash_BMP)
+    i.display_flash_BMPE                     0x08015d1c   Section        0  dwgl_tft.o(i.display_flash_BMPE)
+    i.get_ADC1_3_data                        0x08016054   Section        0  dwgl_function.o(i.get_ADC1_3_data)
+    i.get_checksum                           0x08016104   Section        0  dwgl_function.o(i.get_checksum)
+    i.hub_select                             0x0801612c   Section        0  dwgl_function.o(i.hub_select)
+    hub_select                               0x0801612d   Thumb Code   156  dwgl_function.o(i.hub_select)
+    i.init_LCD_background                    0x080161d0   Section        0  main.o(i.init_LCD_background)
+    i.init_LCD_config                        0x08016244   Section        0  main.o(i.init_LCD_config)
+    i.init_all_local_data_and_display_on_LCD 0x080162d0   Section        0  main.o(i.init_all_local_data_and_display_on_LCD)
+    init_all_local_data_and_display_on_LCD   0x080162d1   Thumb Code   558  main.o(i.init_all_local_data_and_display_on_LCD)
+    i.init_base_data                         0x0801652c   Section        0  main.o(i.init_base_data)
+    i.is_com_msg_head                        0x080165a0   Section        0  dwgl_function.o(i.is_com_msg_head)
+    i.led_power_ctrl                         0x080165e0   Section        0  dwgl_function.o(i.led_power_ctrl)
+    i.main                                   0x08016668   Section        0  main.o(i.main)
+    i.port_Charge_State                      0x0801670c   Section        0  dwgl_function.o(i.port_Charge_State)
+    i.process_com_data                       0x08016890   Section        0  dwgl_function.o(i.process_com_data)
+    i.rewrite_ADC_BaseLine_flash_data        0x08016a08   Section        0  dwgl_function.o(i.rewrite_ADC_BaseLine_flash_data)
+    i.sprintf_com_cmd                        0x08016ad8   Section        0  main.o(i.sprintf_com_cmd)
     i.synthesize_function                    0x08016d14   Section        0  main.o(i.synthesize_function)
     i.tft_1bitdeep_TXT                       0x08016fdc   Section        0  dwgl_tft.o(i.tft_1bitdeep_TXT)
     i.tft_Clear                              0x08017210   Section        0  dwgl_tft.o(i.tft_Clear)
@@ -2018,70 +2017,70 @@ Image Symbol Table
     UART1_Send_Data                          0x08012fd1   Thumb Code   100  dwgl_sci.o(i.UART1_Send_Data)
     UART3_Send_Data                          0x080130e1   Thumb Code    44  dwgl_sci.o(i.UART3_Send_Data)
     UART_Configuration                       0x08013111   Thumb Code    50  dwgl_sci.o(i.UART_Configuration)
-    USART1_IRQHandler                        0x08013161   Thumb Code   114  dwgl_sci.o(i.USART1_IRQHandler)
-    USART2_IRQHandler                        0x080131ed   Thumb Code    94  dwgl_sci.o(i.USART2_IRQHandler)
-    USART3_IRQHandler                        0x08013261   Thumb Code    92  dwgl_sci.o(i.USART3_IRQHandler)
-    USART_ClearITPendingBit                  0x080132d1   Thumb Code    30  stm32f10x_usart.o(i.USART_ClearITPendingBit)
-    USART_Cmd                                0x080132ef   Thumb Code    24  stm32f10x_usart.o(i.USART_Cmd)
-    USART_GetITStatus                        0x08013307   Thumb Code    84  stm32f10x_usart.o(i.USART_GetITStatus)
-    USART_ITConfig                           0x0801335b   Thumb Code    74  stm32f10x_usart.o(i.USART_ITConfig)
-    USART_Init                               0x080133a5   Thumb Code   210  stm32f10x_usart.o(i.USART_Init)
-    UsageFault_Handler                       0x0801347d   Thumb Code     4  stm32f10x_it.o(i.UsageFault_Handler)
-    Version_display                          0x08013481   Thumb Code   102  dwgl_function.o(i.Version_display)
-    __scatterload_copy                       0x080134ed   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x080134fb   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x080134fd   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    check_device_plugin                      0x0801350d   Thumb Code    42  main.o(i.check_device_plugin)
-    check_hub_link_state                     0x08013559   Thumb Code   228  main.o(i.check_hub_link_state)
-    check_key_press_down_to_reset_board      0x08013661   Thumb Code    40  main.o(i.check_key_press_down_to_reset_board)
-    cmd3_Get_State                           0x0801368d   Thumb Code   180  dwgl_function.o(i.cmd3_Get_State)
-    cmd3_Set_State                           0x08013751   Thumb Code   422  dwgl_function.o(i.cmd3_Set_State)
-    cmd3_ShakeHands                          0x08013919   Thumb Code   152  dwgl_function.o(i.cmd3_ShakeHands)
-    com_check_qr_code                        0x080139d1   Thumb Code   172  main.o(i.com_check_qr_code)
-    com_chip_pro                             0x08013a85   Thumb Code   544  main.o(i.com_chip_pro)
-    com_file_called                          0x08013cb9   Thumb Code   718  main.o(i.com_file_called)
-    com_file_erase                           0x08013fa5   Thumb Code   300  main.o(i.com_file_erase)
-    com_file_operations_request              0x080140e1   Thumb Code   764  main.o(i.com_file_operations_request)
-    com_file_transfer                        0x08014401   Thumb Code   624  main.o(i.com_file_transfer)
-    com_get_ad_count                         0x08014691   Thumb Code   106  main.o(i.com_get_ad_count)
-    com_get_adc                              0x08014709   Thumb Code   120  main.o(i.com_get_adc)
-    com_get_charge_speed                     0x08014785   Thumb Code   242  main.o(i.com_get_charge_speed)
-    com_get_embedded_version                 0x08014885   Thumb Code    92  main.o(i.com_get_embedded_version)
-    com_get_port_state                       0x080148e9   Thumb Code   106  main.o(i.com_get_port_state)
-    com_get_version                          0x08014961   Thumb Code   166  main.o(i.com_get_version)
-    com_handshake                            0x08014a15   Thumb Code   214  main.o(i.com_handshake)
-    com_hub_reset                            0x08014b05   Thumb Code   362  main.o(i.com_hub_reset)
-    com_media_time_ctrl                      0x08014c7d   Thumb Code   388  main.o(i.com_media_time_ctrl)
-    com_power_off                            0x08014e21   Thumb Code   138  main.o(i.com_power_off)
-    com_power_on                             0x08014ec9   Thumb Code   372  main.o(i.com_power_on)
-    com_read_flash                           0x0801506d   Thumb Code    64  main.o(i.com_read_flash)
-    com_rgb888_565                           0x080150b1   Thumb Code   390  main.o(i.com_rgb888_565)
-    com_rgb_clear                            0x0801524d   Thumb Code   122  main.o(i.com_rgb_clear)
-    com_save_adc                             0x080152c9   Thumb Code   112  main.o(i.com_save_adc)
-    com_set_device_num                       0x08015345   Thumb Code   510  main.o(i.com_set_device_num)
-    com_set_version                          0x08015565   Thumb Code   230  main.o(i.com_set_version)
-    com_write_flash                          0x08015665   Thumb Code   148  main.o(i.com_write_flash)
-    deal_LCD1_task_at_regular_time           0x08015701   Thumb Code    10  main.o(i.deal_LCD1_task_at_regular_time)
-    deal_LCD2_task_at_regular_time           0x0801570b   Thumb Code    10  main.o(i.deal_LCD2_task_at_regular_time)
-    deal_LCD_task_at_regular_time            0x08015715   Thumb Code    74  main.o(i.deal_LCD_task_at_regular_time)
-    deal_cmd_data                            0x08015771   Thumb Code   432  main.o(i.deal_cmd_data)
-    deal_task_at_regular_time                0x08015921   Thumb Code    66  main.o(i.deal_task_at_regular_time)
-    deal_task_at_regular_time0               0x08015971   Thumb Code   164  main.o(i.deal_task_at_regular_time0)
-    delay_cycle                              0x08015a29   Thumb Code    14  pm25lq512flash.o(i.delay_cycle)
-    display_flash_BMP                        0x08015a39   Thumb Code   704  dwgl_tft.o(i.display_flash_BMP)
-    display_flash_BMPE                       0x08015d09   Thumb Code   818  dwgl_tft.o(i.display_flash_BMPE)
-    get_ADC1_3_data                          0x08016041   Thumb Code   158  dwgl_function.o(i.get_ADC1_3_data)
-    get_checksum                             0x080160f1   Thumb Code    40  dwgl_function.o(i.get_checksum)
-    init_LCD_background                      0x080161bd   Thumb Code   110  main.o(i.init_LCD_background)
-    init_LCD_config                          0x08016231   Thumb Code   126  main.o(i.init_LCD_config)
-    init_base_data                           0x08016519   Thumb Code   100  main.o(i.init_base_data)
-    is_com_msg_head                          0x0801658d   Thumb Code    64  dwgl_function.o(i.is_com_msg_head)
-    led_power_ctrl                           0x080165cd   Thumb Code   126  dwgl_function.o(i.led_power_ctrl)
-    main                                     0x08016655   Thumb Code   142  main.o(i.main)
-    port_Charge_State                        0x080166f9   Thumb Code   364  dwgl_function.o(i.port_Charge_State)
-    process_com_data                         0x0801687d   Thumb Code   404  dwgl_function.o(i.process_com_data)
-    rewrite_ADC_BaseLine_flash_data          0x08016a1d   Thumb Code   190  dwgl_function.o(i.rewrite_ADC_BaseLine_flash_data)
-    sprintf_com_cmd                          0x08016aed   Thumb Code   548  main.o(i.sprintf_com_cmd)
+    USART1_IRQHandler                        0x08013161   Thumb Code   136  dwgl_sci.o(i.USART1_IRQHandler)
+    USART2_IRQHandler                        0x08013201   Thumb Code    94  dwgl_sci.o(i.USART2_IRQHandler)
+    USART3_IRQHandler                        0x08013275   Thumb Code    92  dwgl_sci.o(i.USART3_IRQHandler)
+    USART_ClearITPendingBit                  0x080132e5   Thumb Code    30  stm32f10x_usart.o(i.USART_ClearITPendingBit)
+    USART_Cmd                                0x08013303   Thumb Code    24  stm32f10x_usart.o(i.USART_Cmd)
+    USART_GetITStatus                        0x0801331b   Thumb Code    84  stm32f10x_usart.o(i.USART_GetITStatus)
+    USART_ITConfig                           0x0801336f   Thumb Code    74  stm32f10x_usart.o(i.USART_ITConfig)
+    USART_Init                               0x080133b9   Thumb Code   210  stm32f10x_usart.o(i.USART_Init)
+    UsageFault_Handler                       0x08013491   Thumb Code     4  stm32f10x_it.o(i.UsageFault_Handler)
+    Version_display                          0x08013495   Thumb Code   102  dwgl_function.o(i.Version_display)
+    __scatterload_copy                       0x08013501   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x0801350f   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x08013511   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    check_device_plugin                      0x08013521   Thumb Code    42  main.o(i.check_device_plugin)
+    check_hub_link_state                     0x0801356d   Thumb Code   228  main.o(i.check_hub_link_state)
+    check_key_press_down_to_reset_board      0x08013675   Thumb Code    40  main.o(i.check_key_press_down_to_reset_board)
+    cmd3_Get_State                           0x080136a1   Thumb Code   180  dwgl_function.o(i.cmd3_Get_State)
+    cmd3_Set_State                           0x08013765   Thumb Code   422  dwgl_function.o(i.cmd3_Set_State)
+    cmd3_ShakeHands                          0x0801392d   Thumb Code   152  dwgl_function.o(i.cmd3_ShakeHands)
+    com_check_qr_code                        0x080139e5   Thumb Code   172  main.o(i.com_check_qr_code)
+    com_chip_pro                             0x08013a99   Thumb Code   544  main.o(i.com_chip_pro)
+    com_file_called                          0x08013ccd   Thumb Code   718  main.o(i.com_file_called)
+    com_file_erase                           0x08013fb9   Thumb Code   300  main.o(i.com_file_erase)
+    com_file_operations_request              0x080140f5   Thumb Code   764  main.o(i.com_file_operations_request)
+    com_file_transfer                        0x08014415   Thumb Code   624  main.o(i.com_file_transfer)
+    com_get_ad_count                         0x080146a5   Thumb Code   106  main.o(i.com_get_ad_count)
+    com_get_adc                              0x0801471d   Thumb Code   120  main.o(i.com_get_adc)
+    com_get_charge_speed                     0x08014799   Thumb Code   242  main.o(i.com_get_charge_speed)
+    com_get_embedded_version                 0x08014899   Thumb Code    92  main.o(i.com_get_embedded_version)
+    com_get_port_state                       0x080148fd   Thumb Code   106  main.o(i.com_get_port_state)
+    com_get_version                          0x08014975   Thumb Code   166  main.o(i.com_get_version)
+    com_handshake                            0x08014a29   Thumb Code   214  main.o(i.com_handshake)
+    com_hub_reset                            0x08014b19   Thumb Code   362  main.o(i.com_hub_reset)
+    com_media_time_ctrl                      0x08014c91   Thumb Code   388  main.o(i.com_media_time_ctrl)
+    com_power_off                            0x08014e35   Thumb Code   138  main.o(i.com_power_off)
+    com_power_on                             0x08014edd   Thumb Code   372  main.o(i.com_power_on)
+    com_read_flash                           0x08015081   Thumb Code    64  main.o(i.com_read_flash)
+    com_rgb888_565                           0x080150c5   Thumb Code   390  main.o(i.com_rgb888_565)
+    com_rgb_clear                            0x08015261   Thumb Code   122  main.o(i.com_rgb_clear)
+    com_save_adc                             0x080152dd   Thumb Code   112  main.o(i.com_save_adc)
+    com_set_device_num                       0x08015359   Thumb Code   510  main.o(i.com_set_device_num)
+    com_set_version                          0x08015579   Thumb Code   230  main.o(i.com_set_version)
+    com_write_flash                          0x08015679   Thumb Code   148  main.o(i.com_write_flash)
+    deal_LCD1_task_at_regular_time           0x08015715   Thumb Code    10  main.o(i.deal_LCD1_task_at_regular_time)
+    deal_LCD2_task_at_regular_time           0x0801571f   Thumb Code    10  main.o(i.deal_LCD2_task_at_regular_time)
+    deal_LCD_task_at_regular_time            0x08015729   Thumb Code    74  main.o(i.deal_LCD_task_at_regular_time)
+    deal_cmd_data                            0x08015785   Thumb Code   432  main.o(i.deal_cmd_data)
+    deal_task_at_regular_time                0x08015935   Thumb Code    66  main.o(i.deal_task_at_regular_time)
+    deal_task_at_regular_time0               0x08015985   Thumb Code   164  main.o(i.deal_task_at_regular_time0)
+    delay_cycle                              0x08015a3d   Thumb Code    14  pm25lq512flash.o(i.delay_cycle)
+    display_flash_BMP                        0x08015a4d   Thumb Code   704  dwgl_tft.o(i.display_flash_BMP)
+    display_flash_BMPE                       0x08015d1d   Thumb Code   818  dwgl_tft.o(i.display_flash_BMPE)
+    get_ADC1_3_data                          0x08016055   Thumb Code   158  dwgl_function.o(i.get_ADC1_3_data)
+    get_checksum                             0x08016105   Thumb Code    40  dwgl_function.o(i.get_checksum)
+    init_LCD_background                      0x080161d1   Thumb Code   110  main.o(i.init_LCD_background)
+    init_LCD_config                          0x08016245   Thumb Code   126  main.o(i.init_LCD_config)
+    init_base_data                           0x0801652d   Thumb Code   100  main.o(i.init_base_data)
+    is_com_msg_head                          0x080165a1   Thumb Code    64  dwgl_function.o(i.is_com_msg_head)
+    led_power_ctrl                           0x080165e1   Thumb Code   126  dwgl_function.o(i.led_power_ctrl)
+    main                                     0x08016669   Thumb Code   142  main.o(i.main)
+    port_Charge_State                        0x0801670d   Thumb Code   364  dwgl_function.o(i.port_Charge_State)
+    process_com_data                         0x08016891   Thumb Code   372  dwgl_function.o(i.process_com_data)
+    rewrite_ADC_BaseLine_flash_data          0x08016a09   Thumb Code   190  dwgl_function.o(i.rewrite_ADC_BaseLine_flash_data)
+    sprintf_com_cmd                          0x08016ad9   Thumb Code   568  main.o(i.sprintf_com_cmd)
     synthesize_function                      0x08016d15   Thumb Code   678  main.o(i.synthesize_function)
     tft_1bitdeep_TXT                         0x08016fdd   Thumb Code   554  dwgl_tft.o(i.tft_1bitdeep_TXT)
     tft_Clear                                0x08017211   Thumb Code    56  dwgl_tft.o(i.tft_Clear)
@@ -2446,76 +2445,76 @@ Memory Map of the image
     0x08013044   0x0000009c   Code   RO         4110    i.UART3_Init        dwgl_sci.o
     0x080130e0   0x00000030   Code   RO         4111    i.UART3_Send_Data   dwgl_sci.o
     0x08013110   0x00000050   Code   RO         4112    i.UART_Configuration  dwgl_sci.o
-    0x08013160   0x0000008c   Code   RO         4113    i.USART1_IRQHandler  dwgl_sci.o
-    0x080131ec   0x00000074   Code   RO         4114    i.USART2_IRQHandler  dwgl_sci.o
-    0x08013260   0x00000070   Code   RO         4115    i.USART3_IRQHandler  dwgl_sci.o
-    0x080132d0   0x0000001e   Code   RO         2948    i.USART_ClearITPendingBit  stm32f10x_usart.o
-    0x080132ee   0x00000018   Code   RO         2951    i.USART_Cmd         stm32f10x_usart.o
-    0x08013306   0x00000054   Code   RO         2955    i.USART_GetITStatus  stm32f10x_usart.o
-    0x0801335a   0x0000004a   Code   RO         2957    i.USART_ITConfig    stm32f10x_usart.o
-    0x080133a4   0x000000d8   Code   RO         2958    i.USART_Init        stm32f10x_usart.o
-    0x0801347c   0x00000004   Code   RO         3506    i.UsageFault_Handler  stm32f10x_it.o
-    0x08013480   0x0000006c   Code   RO         3685    i.Version_display   dwgl_function.o
-    0x080134ec   0x0000000e   Code   RO         4883    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x080134fa   0x00000002   Code   RO         4884    i.__scatterload_null  mc_w.l(handlers.o)
-    0x080134fc   0x0000000e   Code   RO         4885    i.__scatterload_zeroinit  mc_w.l(handlers.o)
-    0x0801350a   0x00000002   PAD
-    0x0801350c   0x00000034   Code   RO         3187    i.check_device_plugin  main.o
-    0x08013540   0x00000018   Code   RO         3188    i.check_embeded_program_update  main.o
-    0x08013558   0x00000108   Code   RO         3189    i.check_hub_link_state  main.o
-    0x08013660   0x0000002c   Code   RO         3190    i.check_key_press_down_to_reset_board  main.o
-    0x0801368c   0x000000c4   Code   RO         3687    i.cmd3_Get_State    dwgl_function.o
-    0x08013750   0x000001c8   Code   RO         3688    i.cmd3_Set_State    dwgl_function.o
-    0x08013918   0x000000b8   Code   RO         3689    i.cmd3_ShakeHands   dwgl_function.o
-    0x080139d0   0x000000b4   Code   RO         3191    i.com_check_qr_code  main.o
-    0x08013a84   0x00000234   Code   RO         3192    i.com_chip_pro      main.o
-    0x08013cb8   0x000002ec   Code   RO         3193    i.com_file_called   main.o
-    0x08013fa4   0x0000013c   Code   RO         3194    i.com_file_erase    main.o
-    0x080140e0   0x00000320   Code   RO         3195    i.com_file_operations_request  main.o
-    0x08014400   0x00000290   Code   RO         3196    i.com_file_transfer  main.o
-    0x08014690   0x00000078   Code   RO         3197    i.com_get_ad_count  main.o
-    0x08014708   0x0000007c   Code   RO         3198    i.com_get_adc       main.o
-    0x08014784   0x00000100   Code   RO         3199    i.com_get_charge_speed  main.o
-    0x08014884   0x00000064   Code   RO         3200    i.com_get_embedded_version  main.o
-    0x080148e8   0x00000078   Code   RO         3201    i.com_get_port_state  main.o
-    0x08014960   0x000000b4   Code   RO         3202    i.com_get_version   main.o
-    0x08014a14   0x000000f0   Code   RO         3203    i.com_handshake     main.o
-    0x08014b04   0x00000178   Code   RO         3204    i.com_hub_reset     main.o
-    0x08014c7c   0x000001a4   Code   RO         3205    i.com_media_time_ctrl  main.o
-    0x08014e20   0x000000a8   Code   RO         3206    i.com_power_off     main.o
-    0x08014ec8   0x000001a4   Code   RO         3207    i.com_power_on      main.o
-    0x0801506c   0x00000044   Code   RO         3208    i.com_read_flash    main.o
-    0x080150b0   0x0000019c   Code   RO         3209    i.com_rgb888_565    main.o
-    0x0801524c   0x0000007a   Code   RO         3210    i.com_rgb_clear     main.o
-    0x080152c6   0x00000002   PAD
-    0x080152c8   0x0000007c   Code   RO         3211    i.com_save_adc      main.o
-    0x08015344   0x00000220   Code   RO         3212    i.com_set_device_num  main.o
-    0x08015564   0x00000100   Code   RO         3213    i.com_set_version   main.o
-    0x08015664   0x0000009c   Code   RO         3214    i.com_write_flash   main.o
-    0x08015700   0x0000000a   Code   RO         3215    i.deal_LCD1_task_at_regular_time  main.o
-    0x0801570a   0x0000000a   Code   RO         3216    i.deal_LCD2_task_at_regular_time  main.o
-    0x08015714   0x0000005c   Code   RO         3217    i.deal_LCD_task_at_regular_time  main.o
-    0x08015770   0x000001b0   Code   RO         3218    i.deal_cmd_data     main.o
-    0x08015920   0x00000050   Code   RO         3219    i.deal_task_at_regular_time  main.o
-    0x08015970   0x000000b8   Code   RO         3220    i.deal_task_at_regular_time0  main.o
-    0x08015a28   0x0000000e   Code   RO         4189    i.delay_cycle       pm25lq512flash.o
-    0x08015a36   0x00000002   PAD
-    0x08015a38   0x000002d0   Code   RO         4592    i.display_flash_BMP  dwgl_tft.o
-    0x08015d08   0x00000338   Code   RO         4593    i.display_flash_BMPE  dwgl_tft.o
-    0x08016040   0x000000b0   Code   RO         3692    i.get_ADC1_3_data   dwgl_function.o
-    0x080160f0   0x00000028   Code   RO         3693    i.get_checksum      dwgl_function.o
-    0x08016118   0x000000a4   Code   RO         3694    i.hub_select        dwgl_function.o
-    0x080161bc   0x00000074   Code   RO         3221    i.init_LCD_background  main.o
-    0x08016230   0x0000008c   Code   RO         3222    i.init_LCD_config   main.o
-    0x080162bc   0x0000025c   Code   RO         3223    i.init_all_local_data_and_display_on_LCD  main.o
-    0x08016518   0x00000074   Code   RO         3224    i.init_base_data    main.o
-    0x0801658c   0x00000040   Code   RO         3695    i.is_com_msg_head   dwgl_function.o
-    0x080165cc   0x00000088   Code   RO         3696    i.led_power_ctrl    dwgl_function.o
-    0x08016654   0x000000a4   Code   RO         3225    i.main              main.o
-    0x080166f8   0x00000184   Code   RO         3698    i.port_Charge_State  dwgl_function.o
-    0x0801687c   0x000001a0   Code   RO         3699    i.process_com_data  dwgl_function.o
-    0x08016a1c   0x000000d0   Code   RO         3700    i.rewrite_ADC_BaseLine_flash_data  dwgl_function.o
-    0x08016aec   0x00000228   Code   RO         3226    i.sprintf_com_cmd   main.o
+    0x08013160   0x000000a0   Code   RO         4113    i.USART1_IRQHandler  dwgl_sci.o
+    0x08013200   0x00000074   Code   RO         4114    i.USART2_IRQHandler  dwgl_sci.o
+    0x08013274   0x00000070   Code   RO         4115    i.USART3_IRQHandler  dwgl_sci.o
+    0x080132e4   0x0000001e   Code   RO         2948    i.USART_ClearITPendingBit  stm32f10x_usart.o
+    0x08013302   0x00000018   Code   RO         2951    i.USART_Cmd         stm32f10x_usart.o
+    0x0801331a   0x00000054   Code   RO         2955    i.USART_GetITStatus  stm32f10x_usart.o
+    0x0801336e   0x0000004a   Code   RO         2957    i.USART_ITConfig    stm32f10x_usart.o
+    0x080133b8   0x000000d8   Code   RO         2958    i.USART_Init        stm32f10x_usart.o
+    0x08013490   0x00000004   Code   RO         3506    i.UsageFault_Handler  stm32f10x_it.o
+    0x08013494   0x0000006c   Code   RO         3685    i.Version_display   dwgl_function.o
+    0x08013500   0x0000000e   Code   RO         4883    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x0801350e   0x00000002   Code   RO         4884    i.__scatterload_null  mc_w.l(handlers.o)
+    0x08013510   0x0000000e   Code   RO         4885    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x0801351e   0x00000002   PAD
+    0x08013520   0x00000034   Code   RO         3187    i.check_device_plugin  main.o
+    0x08013554   0x00000018   Code   RO         3188    i.check_embeded_program_update  main.o
+    0x0801356c   0x00000108   Code   RO         3189    i.check_hub_link_state  main.o
+    0x08013674   0x0000002c   Code   RO         3190    i.check_key_press_down_to_reset_board  main.o
+    0x080136a0   0x000000c4   Code   RO         3687    i.cmd3_Get_State    dwgl_function.o
+    0x08013764   0x000001c8   Code   RO         3688    i.cmd3_Set_State    dwgl_function.o
+    0x0801392c   0x000000b8   Code   RO         3689    i.cmd3_ShakeHands   dwgl_function.o
+    0x080139e4   0x000000b4   Code   RO         3191    i.com_check_qr_code  main.o
+    0x08013a98   0x00000234   Code   RO         3192    i.com_chip_pro      main.o
+    0x08013ccc   0x000002ec   Code   RO         3193    i.com_file_called   main.o
+    0x08013fb8   0x0000013c   Code   RO         3194    i.com_file_erase    main.o
+    0x080140f4   0x00000320   Code   RO         3195    i.com_file_operations_request  main.o
+    0x08014414   0x00000290   Code   RO         3196    i.com_file_transfer  main.o
+    0x080146a4   0x00000078   Code   RO         3197    i.com_get_ad_count  main.o
+    0x0801471c   0x0000007c   Code   RO         3198    i.com_get_adc       main.o
+    0x08014798   0x00000100   Code   RO         3199    i.com_get_charge_speed  main.o
+    0x08014898   0x00000064   Code   RO         3200    i.com_get_embedded_version  main.o
+    0x080148fc   0x00000078   Code   RO         3201    i.com_get_port_state  main.o
+    0x08014974   0x000000b4   Code   RO         3202    i.com_get_version   main.o
+    0x08014a28   0x000000f0   Code   RO         3203    i.com_handshake     main.o
+    0x08014b18   0x00000178   Code   RO         3204    i.com_hub_reset     main.o
+    0x08014c90   0x000001a4   Code   RO         3205    i.com_media_time_ctrl  main.o
+    0x08014e34   0x000000a8   Code   RO         3206    i.com_power_off     main.o
+    0x08014edc   0x000001a4   Code   RO         3207    i.com_power_on      main.o
+    0x08015080   0x00000044   Code   RO         3208    i.com_read_flash    main.o
+    0x080150c4   0x0000019c   Code   RO         3209    i.com_rgb888_565    main.o
+    0x08015260   0x0000007a   Code   RO         3210    i.com_rgb_clear     main.o
+    0x080152da   0x00000002   PAD
+    0x080152dc   0x0000007c   Code   RO         3211    i.com_save_adc      main.o
+    0x08015358   0x00000220   Code   RO         3212    i.com_set_device_num  main.o
+    0x08015578   0x00000100   Code   RO         3213    i.com_set_version   main.o
+    0x08015678   0x0000009c   Code   RO         3214    i.com_write_flash   main.o
+    0x08015714   0x0000000a   Code   RO         3215    i.deal_LCD1_task_at_regular_time  main.o
+    0x0801571e   0x0000000a   Code   RO         3216    i.deal_LCD2_task_at_regular_time  main.o
+    0x08015728   0x0000005c   Code   RO         3217    i.deal_LCD_task_at_regular_time  main.o
+    0x08015784   0x000001b0   Code   RO         3218    i.deal_cmd_data     main.o
+    0x08015934   0x00000050   Code   RO         3219    i.deal_task_at_regular_time  main.o
+    0x08015984   0x000000b8   Code   RO         3220    i.deal_task_at_regular_time0  main.o
+    0x08015a3c   0x0000000e   Code   RO         4189    i.delay_cycle       pm25lq512flash.o
+    0x08015a4a   0x00000002   PAD
+    0x08015a4c   0x000002d0   Code   RO         4592    i.display_flash_BMP  dwgl_tft.o
+    0x08015d1c   0x00000338   Code   RO         4593    i.display_flash_BMPE  dwgl_tft.o
+    0x08016054   0x000000b0   Code   RO         3692    i.get_ADC1_3_data   dwgl_function.o
+    0x08016104   0x00000028   Code   RO         3693    i.get_checksum      dwgl_function.o
+    0x0801612c   0x000000a4   Code   RO         3694    i.hub_select        dwgl_function.o
+    0x080161d0   0x00000074   Code   RO         3221    i.init_LCD_background  main.o
+    0x08016244   0x0000008c   Code   RO         3222    i.init_LCD_config   main.o
+    0x080162d0   0x0000025c   Code   RO         3223    i.init_all_local_data_and_display_on_LCD  main.o
+    0x0801652c   0x00000074   Code   RO         3224    i.init_base_data    main.o
+    0x080165a0   0x00000040   Code   RO         3695    i.is_com_msg_head   dwgl_function.o
+    0x080165e0   0x00000088   Code   RO         3696    i.led_power_ctrl    dwgl_function.o
+    0x08016668   0x000000a4   Code   RO         3225    i.main              main.o
+    0x0801670c   0x00000184   Code   RO         3698    i.port_Charge_State  dwgl_function.o
+    0x08016890   0x00000178   Code   RO         3699    i.process_com_data  dwgl_function.o
+    0x08016a08   0x000000d0   Code   RO         3700    i.rewrite_ADC_BaseLine_flash_data  dwgl_function.o
+    0x08016ad8   0x0000023c   Code   RO         3226    i.sprintf_com_cmd   main.o
     0x08016d14   0x000002c8   Code   RO         3227    i.synthesize_function  main.o
     0x08016fdc   0x00000234   Code   RO         4598    i.tft_1bitdeep_TXT  dwgl_tft.o
     0x08017210   0x00000038   Code   RO         4600    i.tft_Clear         dwgl_tft.o
@@ -2583,16 +2582,16 @@ Image component sizes
       1052         30          0         12          0       2797   dwgl_chipflash.o
        264         50          0         24          0       3688   dwgl_dma.o
        140         20          0         16          0       1944   dwgl_exti.o
-      4188        270          0        126          0      14325   dwgl_function.o
+      4148        262          0        126          0      14301   dwgl_function.o
        154          0          0        308      15460       9149   dwgl_global.o
-       908        136          0         59          0       6417   dwgl_sci.o
+       928        134          0         59          0       6429   dwgl_sci.o
       1274         84          0         39          0       7118   dwgl_spi.o
       2954         66          0         56          0      10443   dwgl_tft.o
         66         16          0         22          0       1822   dwgl_tim.o
       2182         46          0          0          0       6188   dwgl_wb_lcd.o
          0          0        640          0          0        648   gimage10_16_288_1bitc.o
          0          0     216576          0          0        560   hzlib_65k.o
-     12088        850       1092         56          0      60374   main.o
+     12108        850       1092         56          0      60382   main.o
        112         12          0          0          0       1048   misc.o
         46          4          0          4          0       1401   pm25lq512flash.o
         36          8        304          0       1024        876   startup_stm32f10x_hd.o
@@ -2612,7 +2611,7 @@ Image component sizes
         36          0          0          0          0        552   wdg.o
 
     ----------------------------------------------------------------------
-     30428       1986     220164        840      16488     506949   Object Totals
+     30428       1976     220164        840      16488     506945   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         24          0          0          6          4          0   (incl. Padding)
 
@@ -2655,9 +2654,9 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     30704       2002     220164        840      16488     497209   Grand Totals
-     30704       2002     220164        336      16488     497209   ELF Image Totals (compressed)
-     30704       2002     220164        336          0          0   ROM Totals
+     30704       1992     220164        840      16488     497205   Grand Totals
+     30704       1992     220164        336      16488     497205   ELF Image Totals (compressed)
+     30704       1992     220164        336          0          0   ROM Totals
 
 ==============================================================================
 

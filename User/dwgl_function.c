@@ -4518,13 +4518,6 @@ void is_com_msg_head(struct cmd_recv_stru *p_cmd_recv_stru, uint8_t u8_recv)
 
 void process_com_data(struct cmd_recv_stru *p_cmd_recv_stru, u8 u8_recv)
 {
-	if (time_sys - time_uart1 >= 100)
-	{
-		if(p_cmd_recv_stru->cmd_recv_state == COM_CMD_RECV_INCOMPLETE && p_cmd_recv_stru->cmd_state != ENUM_COM_MSG_HEAD)
-		{
-			p_cmd_recv_stru->cmd_state = ENUM_COM_MSG_HEAD;
-		}
-	}
 	switch (p_cmd_recv_stru->cmd_state)
 	{
 		case ENUM_COM_MSG_HEAD:

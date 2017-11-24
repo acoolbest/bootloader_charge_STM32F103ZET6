@@ -45,6 +45,7 @@ u16 sprintf_com_cmd(u8 * sz_cmd, struct com_send_stru stru_com_send)
 			*(++p) = (stru_com_send.power_remaining_time&0xff);
 			break;
 		case COM_CMD_GET_CHARGE_SPEED:
+			*(++p) = stru_com_send.port_num;
 			*(++p) = stru_com_send.power_speed;
 			break;
 		case COM_CMD_CHECK_QR_CODE:
@@ -55,6 +56,9 @@ u16 sprintf_com_cmd(u8 * sz_cmd, struct com_send_stru stru_com_send)
 			*(++p) = stru_com_send.check_port[1];
 			memcpy(p+1, stru_com_send.qr_code[1], 8);
 			p += 8;
+			break;
+		case COM_CMD_POWER_OFF:
+			*(++p) = stru_com_send.port_num;
 			break;
 		case COM_CMD_POWER_ON:
 			*(++p) = stru_com_send.port_num;
@@ -91,7 +95,6 @@ u16 sprintf_com_cmd(u8 * sz_cmd, struct com_send_stru stru_com_send)
 			memcpy(p+1, stru_com_send.item_content, stru_com_send.item_len);
 			p += stru_com_send.item_len;
 			break;
-		case COM_CMD_POWER_OFF:
 		case COM_CMD_HUB_RESET:
 		default:
 			break;
@@ -1777,7 +1780,7 @@ void init_base_data(void)
 	device.Version[5] = '7'; //2017年 
 
 	device.Version[7] = '1'; //5月第2版    //Version[1]高四位是月份。低四位是当月产生的版本。
-	device.Version[8] = '6'; //5月第2版
+	device.Version[8] = '9'; //5月第2版
 	#endif
 	
 	step =0;

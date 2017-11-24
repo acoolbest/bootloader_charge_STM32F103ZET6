@@ -328,14 +328,8 @@ void cmd_Device_Info(void)
 	Device_Info();	
 }
 
-
 //---------------------------------------------------------------------------------
-void cmd_Erase_Flash(void)
-{
-
-}
-
-//---------------------------------------------------------------------------------
+#ifndef ZHZQ_TEST
 void cmd_Read_Flash(void)
 {
 	u32 addr,i;
@@ -628,8 +622,12 @@ void cmd_File_Requst(void)
 					{
 						str_buffer[len-1] += str_buffer[i];
 					}
-					str_buffer[len-1]	= frame_last;			
-					FLASH2_GPIOSPI_Write(Addr_01min, str_buffer, len);	
+					str_buffer[len-1]	= frame_last;
+					for(i=0;i<len;i++)
+					{
+						str_buffer[i] = str_buffer[i]+0;
+					}
+					FLASH2_GPIOSPI_Write(Addr_01min, str_buffer, len);
 				}
 				else
 				{
@@ -703,7 +701,11 @@ void cmd_File_Requst(void)
 				{
 					str_buffer[len-1] += str_buffer[i];
 				}
-				str_buffer[len-1]	= frame_last;			
+				str_buffer[len-1]	= frame_last;
+				for(i=0;i<len;i++)
+				{
+					str_buffer[i] = str_buffer[i]+0;
+				}
 				FLASH2_GPIOSPI_Write(Addr_01min, str_buffer, len);	
 			}
 			else
@@ -1425,7 +1427,8 @@ void cmd_File_Requst(void)
 //-----0x12----------------------------------------------------------------------------
 void cmd_File_Tx(void)
 {
-	u16 i,len,EN;
+	u16 i,j,n,len,delay_i;
+	u8 EN;
 	EN = Frame_check_cmd1();  //校验比对。
 	if(EN==0xff)
 	{
@@ -1438,13 +1441,82 @@ void cmd_File_Tx(void)
 			{
 				str_buffer[i] = UART1_RXBUFFER[(UART1_RXBUFFE_HEAD+7+i)&UART1_RX_MAX];
 			}
+			
 			FLASH2_GPIOSPI_Write(file_addr, str_buffer, len-10);
-			FLASH2_GPIOSPI_Read(file_addr, &str_buffer[1000], len-10);
-			for(i=0;i<len-10;i++)
+			
+			n=3;
+			while(n--)
 			{
-				if(str_buffer[1000+i]!=str_buffer[i])
+				EN  = 0xFF;				
+				delay_i=10000;
+				while(delay_i--);
+				FLASH2_GPIOSPI_Read(file_addr, str_buffer1, len-10);
+				for(i=0;i<len-10;i++)
 				{
-					EN = 0; break;
+					if(str_buffer[i]!=str_buffer1[i])
+					{
+						//20171030
+						EN = 1; break;
+					}
+				}
+				if(EN  == 0xFF)
+				{
+					break;
+				}
+			}
+			if(EN == 1)
+			{
+				j= file_addr&0xfff;
+				n=100;
+				while(n--)
+				{
+					EN = 0xff;
+					delay_i=10000;
+					while(delay_i--);
+					FLASH2_GPIOSPI_Read(file_addr&0xfffff000, str_buffer, j);
+					delay_i=10000;
+					while(delay_i--);
+					FLASH2_GPIOSPI_Read(file_addr&0xfffff000, str_buffer1, j);
+					for(i=0;i<j;i++)
+					{
+						if(str_buffer[i]!=str_buffer1[i])
+						{
+							//20171030
+							EN = 1; break;
+						}
+					}
+					if(EN == 0xff)
+					{
+							break;
+					}
+				}
+
+				n=100;
+				while(n--)
+				{
+					EN = 0xff;
+					delay_i=10000;
+					while(delay_i--);
+					FLASH2_GPIOSPI_SER(file_addr);  //
+					delay_i=10000;
+					while(delay_i--);
+					FLASH2_GPIOSPI_Write(file_addr&0xfffff000,str_buffer, j);
+					delay_i=10000;
+					while(delay_i--);
+					FLASH2_GPIOSPI_Read(file_addr&0xfffff000, str_buffer1, j);
+					
+					for(i=0;i<j;i++)
+					{
+						if(str_buffer[i]!=str_buffer1[i])
+						{
+							//20171030
+							EN = 1; break;
+						}
+					}
+					if(EN == 0xff)
+					{
+							EN =0xff; break;
+					}
 				}
 			}
 			if(EN == 0xFF)
@@ -1493,14 +1565,15 @@ void cmd_File_Tx(void)
 	UART1_TXBUFFER[5] =  UART1_RXBUFFER[(UART1_RXBUFFE_HEAD+5)&UART1_RX_MAX];
 	UART1_TXBUFFER[6] =  UART1_RXBUFFER[(UART1_RXBUFFE_HEAD+6)&UART1_RX_MAX];
 
-	if(EN==0)
-	{
-		UART1_TXBUFFER[7] =  0;
-	}
-	else
-	{
-		UART1_TXBUFFER[7] =  0xff;
-	}
+//	if(EN==0)
+//	{
+//		UART1_TXBUFFER[7] =  0;
+//	}
+//	else
+//	{
+//		UART1_TXBUFFER[7] =  0xff;
+//	}
+	UART1_TXBUFFER[7] =  EN;
 	UART1_TXBUFFER[8] = 0;//check;
 	for(i=1;i<((UART1_TXBUFFER[1]<<1)-2);i++)
 	{
@@ -1956,6 +2029,7 @@ void cmd_File_Erase(void)
 }
 
 //---------------------------------------------------------------------------------
+
 void cmd_Port_Info(void)   //PC机要的上电情况信息
 {
 	u8 i,data;
@@ -2040,11 +2114,11 @@ void cmd_Get_charge_speed(void)   //获取充电速度
 	{
 		if((Dport_State[i]&0x0c)==0x0c)
 		{
-			if(ADC_data[i]-ADC_Base0[i]>0xD00)		 //0XD00=560MA
+			if(ADC_data[i]-ADC_Base0[i]>0x455)		 //0XD00=560MA
 			{
 				UART1_TXBUFFER[6] =  2;
 			}
-			else if(ADC_data[i]-ADC_Base0[i]>0x200)   //0x200=80MA
+			else if(ADC_data[i]-ADC_Base0[i]>0xAA)   //0x200=80MA
 			{
 				UART1_TXBUFFER[6] =  1;
 			}
@@ -2062,6 +2136,7 @@ void cmd_Get_charge_speed(void)   //获取充电速度
 			}
 			UART1_TXBUFFER[(UART1_TXBUFFER[1]<<1)-1] =  frame_last;
 			UART1_Send_Data(UART1_TXBUFFER,(UART1_TXBUFFER[1]<<1));
+			break;
 		}
 	}
 }
@@ -2839,7 +2914,7 @@ void cmd_Hub_Rst(void)
 	}
 
 }
-
+#endif
 //---------------------------------------------------------------------------------
 void Hub_ID_Info(void)
 {
@@ -3374,7 +3449,7 @@ void get_ADC1_3_data(u16 * ADC_data)
 		else ADC_data[i] = ADC3_Pointer[ADC3_channel[i-6]*ADC_SAMPLING_TIMES+2];
 	}
 }
-
+#ifndef ZHZQ_TEST
 void cmd_Get_ADC(void)
 {
 	u8 i;
@@ -3600,6 +3675,7 @@ void cmd_RGB888_565(void)
 		UART1_Send_Data(UART1_TXBUFFER,(UART1_TXBUFFER[1]<<1));
 	}
 }
+#endif
 //-------------------------------------
 void RGB888_565(unsigned int addr)
 {
@@ -3718,6 +3794,7 @@ void RGB888_565(unsigned int addr)
 		}
 	}
 }
+#ifndef ZHZQ_TEST
 void cmd_RGB_clear(void)
 {
 	u16 colour_t,x_l,y_l,x_o, y_o;
@@ -3744,8 +3821,9 @@ void cmd_RGB_clear(void)
 		tft_Clear(x_l,y_l,x_o,y_o,colour_t,UART1_RXBUFFER[(UART1_RXBUFFE_HEAD+5)&UART1_RX_MAX]);		//		
 	}
 }
-
+#endif
 //-----------------------------------------
+#ifndef ZHZQ_TEST
 void cmd_CHIP_PRO(void)
 {
 	u16 i,en;
@@ -3953,6 +4031,7 @@ void cmd_Save_ADC(void)
 	UART1_Send_Data(UART1_TXBUFFER,(UART1_TXBUFFER[1]<<1));
 
 }
+#endif
 //-----------------------------------------
 void Dport_ChargeHB_ON (void)
 {
@@ -4420,4 +4499,123 @@ void Version_display(u16 x,u8 *p)
 	tft_DisplayStr(x, (240-8*17)/2, UART_BUFFER,POINT_COLOR, BLUE,3);
 }
 
+void is_com_msg_head(struct cmd_recv_stru *p_cmd_recv_stru, uint8_t u8_recv)
+{
+	if (u8_recv == RECV_COM_MSG_HEAD)
+    {
+		p_cmd_recv_stru->cmd_recv_state = COM_CMD_RECV_INCOMPLETE;
+        p_cmd_recv_stru->cmd_index = 0;
+		p_cmd_recv_stru->cmd_buffer[p_cmd_recv_stru->cmd_index] = u8_recv;
+		p_cmd_recv_stru->cmd_index = (p_cmd_recv_stru->cmd_index + 1) % MAX_SERIAL_BUFFER_LENGHT;
+        p_cmd_recv_stru->cmd_state = ENUM_COM_MSG_LEN;
+    }
+	else
+	{
+		p_cmd_recv_stru->cmd_index = 0;
+		p_cmd_recv_stru->cmd_state = ENUM_COM_MSG_HEAD;
+	}
+}
+
+void process_com_data(struct cmd_recv_stru *p_cmd_recv_stru, u8 u8_recv)
+{
+	if (time_sys - time_uart1 >= 100)
+	{
+		if(p_cmd_recv_stru->cmd_recv_state == COM_CMD_RECV_INCOMPLETE && p_cmd_recv_stru->cmd_state != ENUM_COM_MSG_HEAD)
+		{
+			p_cmd_recv_stru->cmd_state = ENUM_COM_MSG_HEAD;
+		}
+	}
+	switch (p_cmd_recv_stru->cmd_state)
+	{
+		case ENUM_COM_MSG_HEAD:
+		{
+			is_com_msg_head(p_cmd_recv_stru, u8_recv);
+			break;
+		}
+		case ENUM_COM_MSG_LEN:
+		{
+			if (u8_recv >=0x04 && u8_recv <= 0x85)
+			{
+				p_cmd_recv_stru->cmd_length = u8_recv*2;
+				p_cmd_recv_stru->cmd_buffer[p_cmd_recv_stru->cmd_index] = u8_recv;
+				p_cmd_recv_stru->cmd_index = (p_cmd_recv_stru->cmd_index + 1) % MAX_SERIAL_BUFFER_LENGHT;
+                p_cmd_recv_stru->cmd_state = ENUM_COM_MSG_DST_ADDR;
+			}
+			else 
+				is_com_msg_head(p_cmd_recv_stru, u8_recv);
+			break;
+		}
+		case ENUM_COM_MSG_DST_ADDR:
+		{
+			if(u8_recv == device.addr)
+			{
+				p_cmd_recv_stru->cmd_buffer[p_cmd_recv_stru->cmd_index] = u8_recv;
+				p_cmd_recv_stru->cmd_index = (p_cmd_recv_stru->cmd_index + 1) % MAX_SERIAL_BUFFER_LENGHT;
+                p_cmd_recv_stru->cmd_state = ENUM_COM_MSG_SRC_ADDR;
+			}
+			else 
+				is_com_msg_head(p_cmd_recv_stru, u8_recv);
+			break;
+		}
+		case ENUM_COM_MSG_SRC_ADDR:
+		{
+			if(u8_recv == COM_PC_ADDR || u8_recv == COM_GLOBLE_ADDR || u8_recv == COM_BROADCAST_ADDR)
+			{
+				p_cmd_recv_stru->cmd_buffer[p_cmd_recv_stru->cmd_index] = u8_recv;
+				p_cmd_recv_stru->cmd_index = (p_cmd_recv_stru->cmd_index + 1) % MAX_SERIAL_BUFFER_LENGHT;
+                p_cmd_recv_stru->cmd_state = ENUM_COM_MSG_FUNCTION_CODE;
+			}
+			else 
+				is_com_msg_head(p_cmd_recv_stru, u8_recv);
+			break;
+		}
+		case ENUM_COM_MSG_FUNCTION_CODE:
+		{
+			p_cmd_recv_stru->cmd_buffer[p_cmd_recv_stru->cmd_index] = u8_recv;
+			p_cmd_recv_stru->cmd_index = (p_cmd_recv_stru->cmd_index + 1) % MAX_SERIAL_BUFFER_LENGHT;
+            p_cmd_recv_stru->cmd_state = ENUM_SPP_MSG_PAYLOAD;
+			break;
+		}
+		case ENUM_SPP_MSG_PAYLOAD:
+		{
+			p_cmd_recv_stru->cmd_buffer[p_cmd_recv_stru->cmd_index] = u8_recv;
+			p_cmd_recv_stru->cmd_index = (p_cmd_recv_stru->cmd_index + 1) % MAX_SERIAL_BUFFER_LENGHT;
+			if(p_cmd_recv_stru->cmd_index + 2 == p_cmd_recv_stru->cmd_length)
+				p_cmd_recv_stru->cmd_state = ENUM_SPP_MSG_CHECKSUM;
+			break;
+		}
+		case ENUM_SPP_MSG_CHECKSUM:
+		{
+			p_cmd_recv_stru->cmd_buffer[p_cmd_recv_stru->cmd_index] = u8_recv;
+			p_cmd_recv_stru->cmd_index = (p_cmd_recv_stru->cmd_index + 1) % MAX_SERIAL_BUFFER_LENGHT;
+            p_cmd_recv_stru->cmd_state = ENUM_COM_MSG_TAIL;
+			break;
+		}
+		case ENUM_COM_MSG_TAIL:
+		{
+			if(u8_recv == DEFAULT_COM_MSG_TAIL)
+			{
+				p_cmd_recv_stru->cmd_buffer[p_cmd_recv_stru->cmd_index] = u8_recv;
+				p_cmd_recv_stru->cmd_index = 0;
+                p_cmd_recv_stru->cmd_state = ENUM_COM_MSG_HEAD;
+				p_cmd_recv_stru->cmd_recv_state = COM_CMD_RECV_COMPLETE;
+			}
+			else 
+				is_com_msg_head(p_cmd_recv_stru, u8_recv);
+			break;
+		}
+	}
+}
+
+u8 get_checksum(u8 * p_frame, u16 frame_len)
+{
+	u8 sum = 0;
+	u16 i = 0;
+	
+	if(p_frame == NULL || frame_len == 0)
+		return 0;
+
+	for (i = 1; i < frame_len - 2; i++) sum += p_frame[i];
+	return sum;
+}
 

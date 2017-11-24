@@ -116,5 +116,8 @@ extern void rewrite_ADC_BaseLine_flash_data(void);
 extern void port_Charge_State(u8 lcd_index);
 extern void get_ADC1_3_data(u16 * ADC_data);
 
+extern void process_com_data(struct cmd_recv_stru *p_cmd_recv_stru, u8 u8_recv);
+extern u8 get_checksum(u8 * p_frame, u16 frame_len);
+
 
 #endif

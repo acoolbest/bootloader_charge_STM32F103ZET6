@@ -249,6 +249,7 @@ void USART1_IRQHandler(void)
 	led_power_ctrl(LED_INDEX, LED_TURN_ON);
 	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
 	{
+		process_com_data(&stru_cmd_recv, USART1->DR);
 		UART1_Receive_Pointer[UART1_RXBUFFE_LAST] = USART1->DR;
 		UART1_RXBUFFE_LAST++;
 		UART1_RXBUFFE_LAST &= 0x1ff;//最大字节
@@ -351,6 +352,9 @@ void USART3_IRQHandler(void)
  ***********************************************************************/
 void UART1_Send_Data(u8 * p,u16 len)
 {
+	if(len == 0)
+		return;
+	
 	unsigned int i = 0;
 
 	while((time_sys-time_uart1)<2);//等待总线空闲
@@ -411,6 +415,11 @@ void UART3_Send_Data(u8 * p,u16 len)
 //*******************************************************************
 void UART_Configuration(void)
 {
+	stru_cmd_recv.cmd_index = 0;
+	stru_cmd_recv.cmd_length = 0;
+	stru_cmd_recv.cmd_state = ENUM_COM_MSG_HEAD;
+	stru_cmd_recv.cmd_recv_state = COM_CMD_RECV_INCOMPLETE;
+
 	UART1_Receive_Pointer = UART1_RXBUFFER;
 	UART2_Receive_Pointer = UART2_RXBUFFER;
 	UART3_Receive_Pointer = UART3_RXBUFFER;

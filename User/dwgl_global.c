@@ -7,6 +7,9 @@ struct  device_table device;
 struct  file_table file_t;
 struct  Addr_info2STR info2STR;
 struct  LCDREG  LCDC;
+
+struct cmd_recv_stru stru_cmd_recv;
+
 u32 time_sys =0;
 u16 step;
 u16 time_s;
@@ -30,6 +33,7 @@ volatile unsigned char touch_flag;
 u32 time_uart1;
 u32 time_uart3;
 u8 str_buffer[4100];
+u8 str_buffer1[4100];
 
 u8 LCD_TxtBuffer[2][2050];		//做显示的内存
 
@@ -44,6 +48,9 @@ u8 checking_portC;
 u8 checking_port[2];
 u8 LOW_portB;
 u8 LOW_portC;
+
+u32 file_area_addr_min[6] = {0x000000,0x080000,0x100000,0x400000,0xE00000,0xF00000};
+u32 file_area_addr_max[6] = {0x01ffff,0x09FFFF,0x2FFFFF,0xBFFFFF,0xEFFFFF,0xF10000};
 
 //u8  LCD1_CTRL8[8];			//做LCD1控制字
 //u8  LCD2_CTRL8[8];			//做LCD2控制字

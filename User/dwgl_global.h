@@ -6,9 +6,10 @@
 #define	__DWGL_GLOBAL_H
 
 #include "stm32f10x.h"
-
-#define N_VERSION_SOURCECODE
+#include "string.h"
+//#define N_VERSION_SOURCECODE
 //#define BOOTLOADER_SOURCECODE
+#define ZHZQ_TEST
 
 #if defined (STM32F10X_LD)
 #error " target STM32F10x device used (STM32F10X_LD) (in dwgl_global.h file)"
@@ -157,13 +158,128 @@ struct  LCDREG {
 	u8 LCDSPPID[2];			//屏保ID
 	u16 LCDPTime[2];		//广告间隔计数
 	u8 LCDPID[2];			//广告图片ID
-};	 
+};
+
+enum com_file_area
+{
+	QR_CODE_AREA = 0,
+	FONT_AREA,
+	BACKGROUND_AREA,
+	MEDIA_AREA,
+	EMBEDDED_AREA,
+	INFO_AREA
+};
+
+extern u32 file_area_addr_min[6];
+extern u32 file_area_addr_max[6];
+
+#define			RECV_COM_MSG_HEAD					0x67
+#define			SEND_COM_MSG_HEAD					0x68
+#define			DEFAULT_COM_MSG_TAIL				0x99
+
+#define			COM_GLOBLE_ADDR						0xE0
+#define			COM_PC_ADDR							0xF0
+#define			COM_BROADCAST_ADDR					0xFF
+
+
+#define			COM_CMD_GET_DEVICE_INFO				0x51
+#define			COM_CMD_GET_PORT_STATE				0x53
+#define			COM_CMD_GET_CHARGE_SPEED			0x54
+#define			COM_CMD_CHECK_QR_CODE				0x55
+#define			COM_CMD_SET_DEVICE_NUM				0x57
+#define			COM_CMD_POWER_OFF					0x59
+#define			COM_CMD_POWER_ON					0x5A
+#define			COM_CMD_HUB_RESET					0x10
+#define			COM_CMD_FILE_OPERATIONS_REQ			0x11
+#define			COM_CMD_FILE_TRANSFER				0x12
+#define			COM_CMD_FILE_CALLED					0x13
+#define			COM_CMD_FILE_ERASE					0x14
+#define			COM_CMD_HANDSHAKE					0x16
+#define			COM_CMD_ABNORMAL_FEEDBACK			0x1E
+#define			COM_CMD_MEDIA_TIME_CTRL				0x30
+#define			COM_CMD_SET_AREA_VERSION			0x32
+#define			COM_CMD_GET_AREA_VERSION			0x33
+#define			COM_CMD_AD_DATA_STATISTICS			0X34
+#define			COM_CMD_GET_EMBEDDED_VERSION		0xEB
+
+#define			COM_CMD_READ_FLASH					0xE4
+#define			COM_CMD_WRITE_FLASH					0xE5
+#define			COM_CMD_GET_ADC						0xE6		
+#define			COM_CMD_SAVE_ADC					0xE7
+#define			COM_CMD_RGB888_565					0xE8
+#define			COM_CMD_RGB_CLEAR					0xE9
+#define			COM_CMD_CHIP_PRO					0xEA
+
+#define			MAX_SERIAL_BUFFER_LENGHT            (0x85*2)
+
+#define			COM_CMD_RECV_INCOMPLETE				0x00
+#define			COM_CMD_RECV_COMPLETE				0x01
+
+struct cmd_recv_stru
+{
+	u8 cmd_buffer[MAX_SERIAL_BUFFER_LENGHT];
+	u16 cmd_length;
+	u16 cmd_index;
+	u8 cmd_state;
+	u8 cmd_recv_state;
+};
+
+struct com_send_stru
+{
+	u8 cmd_type;
+	u8 dst_addr;
+	u8 port_num;
+	
+	u16 power_set_time;
+	u16 power_remaining_time;
+	
+	u8 power_speed;
+	
+	u8 check_port[2];
+	u8 qr_code[2][8];
+	
+	u8 confirm_flag;
+	
+	u8 charge_model;
+	u8 time_ctrl;
+	u16 power_on_time;
+
+	u8 reset_type;
+
+	u8 file_operation_type;
+	u8 file_area;
+	u8 file_num;
+	u32 file_size;
+
+	u8 transfer_flag;
+	u8 section_num;
+
+	u8 handshake_mode;
+	
+	u8 item_number;
+	u8 item_len;
+	u8 *item_content;
+};
+
+enum enum_com_msg_state
+{
+	ENUM_COM_MSG_HEAD = 0,		//0x67, 0x68
+	ENUM_COM_MSG_LEN,			//an even number
+	ENUM_COM_MSG_DST_ADDR,		//0x11~0x66,0xff; 0xF0
+	ENUM_COM_MSG_SRC_ADDR,		//0xF0; 0x10~0x60,0x11~0x66
+	ENUM_COM_MSG_FUNCTION_CODE,	//0x51,0x53,0x59,0x5a,0x10,0x11,0x12,0x13,0x14,0x16,0x1e
+	ENUM_SPP_MSG_PAYLOAD,
+	ENUM_SPP_MSG_CHECKSUM,
+	ENUM_COM_MSG_TAIL			//0x99
+};
 
 extern struct device_table device;
 extern struct file_table * file_p;
 extern struct file_table file_t;
 extern struct Addr_info2STR info2STR;
 extern struct LCDREG LCDC;
+extern struct cmd_recv_stru stru_cmd_recv;
+
 extern u16 step;
 extern u16 time_s;
 extern u16 testcmd1_time;
@@ -186,6 +302,7 @@ extern volatile unsigned char touch_flag;
 extern u32 time_uart1;
 extern u32 time_uart3;
 extern u8 str_buffer[4100];			//做显示的内存
+extern u8 str_buffer1[4100];			//做显示的内存
 extern u8 LCD_TxtBuffer[2][2050];	//做显示的内存
 extern u16 Uport_PowerSetTime[2];
 extern u16 Uport_PowerUseTime[2];
